@@ -1,0 +1,61 @@
+.Form{
+    margin: 50px auto;
+   height:500px;
+   width:48vw;
+   text-align: center;
+}
+.Avtar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.Avtar p{
+    height: 50px;
+    width:50px;
+    background: rgb(245,0,87);
+    border-radius: 50%;
+    margin-bottom: 0;
+}
+.Avtar h3{
+    font-weight: 400;
+    font-size: 20px;
+}
+.main div{
+    height: 70px;
+    width:97%;
+    margin:auto;
+}
+
+.main div input{
+    width: 80%;
+    height:35px;
+    padding: 0 20px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    transition: all 0.3s ease-in;
+}
+.main div input:focus{
+    outline: none;
+   border : 2px solid rgb(63,81,181);
+}
+.main div p {
+    text-align: left;
+    padding:0 20px;
+}
+.Submit{
+    display: inline-Block;
+    font-size:18px;
+    border: none;
+    width: 90%;
+    height: 35px;
+    border-radius: 5px;
+    background-color: rgb(63,81,181);
+    color: white;
+}
+.Submit:hover{
+    background-color: #303f9f;
+}
+.Submit:focus{
+    outline: none;
+}

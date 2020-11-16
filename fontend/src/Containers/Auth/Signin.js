@@ -1,103 +1,109 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import React, { Component } from "react";
+import classes from "./Signup.module.css";
+import { withRouter } from "react-router-dom";
+// import axios from "../../Components/axios";
+class signin extends Component {
+  state = {
+    name: "",
+    username: "",
+    password: "",
+    wrongpass: false,
+  };
 
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { Link, Route, Switch,withRouter} from 'react-router-dom';
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+  onChangeHandler = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
 
-export default function SignIn() {
-  const classes = useStyles();
+  submit = (e) => {
+    e.preventDefault();
+    const Data = {
+      username: this.state.username,
+      password: this.state.password,
+    };
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          {/* <LockOutlinedIcon /> */}
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" >
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="Signup" >
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+    // axios
+    //   .post("login", Data)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.status === 200) {
+    //       localStorage.setItem("jwt", response.data.jwt);
+    //       localStorage.setItem("Userdata",response.data.user.username);
+    //       this.toHome();
+    //     }
+    //     this.props.loginname(this.state.username);
+    //   })
+    //   .catch((error) => {
+    //     if(error.response.status === 406)
+    //     {
+    //       this.setState({ wrongpass: error.response.data });
+    //     }
+    //     if (error.response.status === 404) {
+    //       this.setState({ wrongpass:"*wrong credentials*" });
+    //     }
+    //     console.log(error.response.data);
+    //   });
+  };
+  toHome = () => {
+    this.props.history.push("/");
+  };
+  toSignup = () => {
+    this.props.history.push("/Signup");
+  };
+
+  render() {
+    console.log(this.props)
+    let wrongpassview = "";
+    if (this.state.wrongpass != null) {
+      wrongpassview = this.state.wrongpass;
+    }
+    return (
+      <div className={classes.Form}>
+        <div className={classes.Avtar}>
+        <p>
+        <svg width="50px" height="46px"  color="white" viewBox="0 0 16 16" className="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fillRule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+</svg>
+        </p>
+        <h3>
+        Sign in
+        </h3>
+        </div>
+        <form className={classes.main}>
+          
+          <div>
+          <input type="text" 
+          placeholder="Username *"
+          value={this.state.username}
+          name="username"
+          onChange={this.onChangeHandler}
+          ></input>
+          
+          </div>
+          
+          <div>
+          <input type="password"
+           placeholder="Password *"
+           value={this.state.password}
+           name="password"
+           onChange={this.onChangeHandler}
+           ></input>
+           </div>
+           
+          <div style={{height:"35px"}}>
+          <button onClick={this.submit} className={classes.Submit}>Submit</button>
+          </div>
+
+         <p onClick={this.toSignup} cursor='pointer'>Not registered yet?</p>
+    <p style={{color:'red', fontSize:'12px' }}>{wrongpassview}</p>
+
         </form>
       </div>
-      <Box mt={8}>
-      </Box>
-    </Container>
-  );
+
+    );
+  }
 }
+export default withRouter(signin);
