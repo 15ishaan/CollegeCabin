@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classes from "./Signup.module.css";
 import { withRouter } from "react-router-dom";
-// import axios from "../../Components/axios";
+import axios from "axios";
 class signin extends Component {
   state = {
     name: "",
@@ -25,27 +25,27 @@ class signin extends Component {
       password: this.state.password,
     };
 
-    // axios
-    //   .post("login", Data)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status === 200) {
-    //       localStorage.setItem("jwt", response.data.jwt);
-    //       localStorage.setItem("Userdata",response.data.user.username);
-    //       this.toHome();
-    //     }
-    //     this.props.loginname(this.state.username);
-    //   })
-    //   .catch((error) => {
-    //     if(error.response.status === 406)
-    //     {
-    //       this.setState({ wrongpass: error.response.data });
-    //     }
-    //     if (error.response.status === 404) {
-    //       this.setState({ wrongpass:"*wrong credentials*" });
-    //     }
-    //     console.log(error.response.data);
-    //   });
+    axios
+      .post("http://8d2d9e470158.ngrok.io/login", Data)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          localStorage.setItem("jwt", response.data.jwt);
+          // localStorage.setItem("Userdata",response.data.user.username);
+          this.toHome();
+        }
+        this.props.loginname(this.state.username);
+      })
+      .catch((error) => {
+        // if(error.response.status === 406)
+        // {
+        //   this.setState({ wrongpass: error.response.data });
+        // }
+        // if (error.response.status === 404) {
+        //   this.setState({ wrongpass:"*wrong credentials*" });
+        // }
+          this.setState({wrongpass: error.response.data.message});
+      });
   };
   toHome = () => {
     this.props.history.push("/");
@@ -55,7 +55,7 @@ class signin extends Component {
   };
 
   render() {
-    console.log(this.props)
+    // /onsole.log(this.props)
     let wrongpassview = "";
     if (this.state.wrongpass != null) {
       wrongpassview = this.state.wrongpass;
@@ -97,7 +97,7 @@ class signin extends Component {
           <button onClick={this.submit} className={classes.Submit}>Submit</button>
           </div>
 
-         <p onClick={this.toSignup} cursor='pointer'>Not registered yet?</p>
+         <p onClick={this.toSignup} style={{cursor:"pointer"}}>Not registered yet?</p>
     <p style={{color:'red', fontSize:'12px' }}>{wrongpassview}</p>
 
         </form>

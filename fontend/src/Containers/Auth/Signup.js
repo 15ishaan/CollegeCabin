@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classes from "./Signup.module.css";
-// import axios from "../../Components/axios";
+import axios from 'axios';
 import { withRouter } from "react-router-dom";
 
 class Signup extends Component {
@@ -9,7 +9,6 @@ class Signup extends Component {
     email: "",
     username: "",
     password: "",
-    roles: "",
     registered: false,
     errors: {},
     error:'',
@@ -18,28 +17,30 @@ class Signup extends Component {
     e.preventDefault();
     if (this.validate()) {
       const Data = {
-        name: this.state.name,
-        username: this.state.username,
-        email: this.state.email,
+        firstName: this.state.name,
+        lastName: this.state.username,
+        username: this.state.email,
         password: this.state.password,
-        roles: "USER",
+        confirmPassword:this.state.password,
+        roles:"admin"
       };
-      // axios
-      //   .post("user/registration", Data)
-      //   .then((response) => {
+      console.log(Data);
+      axios
+        .post("http://8d2d9e470158.ngrok.io/registeruser", Data)
+        .then((response) => {
 
-      //     if (response.status === 200) {
-      //         this.setState({ registered: true });
-      //       this.props.history.push("/login");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error.response.data);
-      //     this.setState({
-      //       error:error.response.data
-      //               })
+          if (response.status === 200) {
+              this.setState({ registered: true });
+            this.props.history.push("/Signin");
+          }
+        })
+        .catch((error) => {
+          console.log(error.response);
+          this.setState({
+            error:error.response.data.message
+                    })
 
-      //   });
+        });
 
       
     }
@@ -177,7 +178,7 @@ class Signup extends Component {
           <button onClick={this.submit} className={classes.Submit}>Submit</button>
           </div>
 
-         <p onClick={this.toSignin} cursor='pointer'>Already registered?</p>
+         <p onClick={this.toSignin} style={{cursor:"pointer"}}>Already registered?</p>
               <p style={{color:'red', fontSize:'12px' }}>{this.state.error}</p>
 
         </form>
