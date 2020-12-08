@@ -59,3 +59,12 @@
 .Submit:focus{
     outline: none;
 }
+@media only screen and (max-width:430px)
+{
+    .Form{
+        margin: 50px auto;
+       height:500px;
+       width:80vw;
+       text-align: center;
+    }
+}
