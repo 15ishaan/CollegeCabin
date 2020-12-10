@@ -1,0 +1,108 @@
+.Main{
+  
+    border-radius: 15px;
+    height: 70vh;
+    width: 80vw;
+    margin :auto;
+    background-color:white;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+    padding: 20px;
+    position: relative;
+}
+
+.Photobar{
+    border-radius: 15px;
+    background-color: rgb(102, 153, 228);
+    backdrop-filter: blur(5%);
+    height:200px;
+    width:100%;
+    position: relative;
+    text-align: center;
+    margin-bottom: 80px;
+}
+.Userimage{
+    height : 150px;
+    width :150px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -60px;
+    left : 50px;
+}
+.Userimage img{
+    border-radius: 50%;
+    box-shadow:0 0 6px 5px rgba(0,0,0,.15), 0 2px 5px rgba(0,0,0,0.2) ;
+}
+.Username{
+    font-size: 25px;
+    position: absolute;
+    bottom: -20px;
+    left : 220px;
+}
+.Info{
+    margin-left : 40px;
+    
+}
+.Info h4{
+    margin :5px; 
+    
+}
+.Info p{
+    margin-left :2px;
+    margin-right :2px;
+    display: inline-block;
+    line-height:200%;
+
+}
+.Editdetails{
+    padding:10px 20px;
+    border-radius: 25px;
+    background-color: rgb(245,0,87);
+    width:80px;
+    box-shadow:2px 2px 6px 5px rgba(0,0,0,.15), 2px 2px 5px rgba(0,0,0,0.2) ;
+
+}
+.Editdetails{
+    color:aliceblue;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute;
+    top:300px;
+    right:40px;
+}
+.Editdetails:active {
+    box-shadow:none ;
+
+}
+
+
+@media only screen and (max-width:550px){
+    .Userimage{
+        bottom: -60px;
+         left:30%;
+    }
+    
+    .Username{
+        font-size: 25px;
+        position: absolute;
+        bottom: -120px;
+        left : 28%;
+    }
+    .Info{
+        margin-top:150px;
+        margin-left : 40px;
+        
+    }
+}
+@media only screen and (max-width:442px){
+    .Userimage{
+        bottom: -60px;
+         left:25%;
+    }
+    
+    .Username{
+        font-size: 25px;
+        position: absolute;
+        bottom: -120px;
+        left : 20%;
+    }
+}
