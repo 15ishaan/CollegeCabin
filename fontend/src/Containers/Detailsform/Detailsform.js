@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import classes from "../Detailsform/Detailsform.module.css";
 import axios from 'axios'
+import Select from '../../Components/reusable/Selectinput';
 class details extends Component {
   state = {
     collegeName: "",
@@ -10,59 +11,73 @@ class details extends Component {
     gender: "",
     dob: "",
     bio: "",
+    componentcollegename:{
+      label:'College Name*',
+      name:"collegeName",
+      menu:["Ajay Kumar Garg Engineering College" , "Krishna Institute of Information Technology" ,"JSS Acandemy of Technical Education", "Institue of Engineering and Technology" , "ABES Institue of Technology"]
+    },
+    componentbranchname:{
+      label:"Branch Name*",
+      name:"branch",
+      menu:["Computer Science","Information Technology","Electronics and Communication","Electrical","Mechanical","Civil"],
+    },
+    componentyearname:{
+      label:"Semester*",
+      name:"semester",
+      menu:["1st" , "2nd" , "3rd" , "4th","5th","6th","7th","8th"]
+    }
+
   };
   submit = (e) => {
-    e.preventDefault();
-    if (this.validate()) {
+    
+        e.preventDefault();
+    
       const Data = {
-        
+        collegeName:this.state.collegeName,
+        branch:this.state.branch,
+        sem:this.state.semester,
+        gender:this.state.gender,
+        birthdate:this.state.dob,
+        bio:this.state.bio,
+        username:localStorage.getItem("username")
       };
       console.log(Data);
-      axios
-        .post("http://8d2d9e470158.ngrok.io/registeruser", Data)
-        .then((response) => {
-
-          if (response.status === 200) {
-              this.setState({ registered: true });
-            this.props.history.push("/Signin");
-          }
-        })
-        .catch((error) => {
-          console.log(error.response);
-          this.setState({
-            error:error.response.data.message
-                    })
-
-        });
-
+      axios.post("http://3faa179cd914.ngrok.io/UserDetails",Data,{
+        onUploadProgress: ProgressEvent =>{
+          console.log(ProgressEvent.loaded/ProgressEvent.total*100);
+        }
+      })
+      .then((response) =>{
+        console.log(response);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
       
     }
-  };
+  
   onChangeHandler = (event) =>
   {
     let name = event.target.name;
     let value = event.target.value;
-    if(name === "sem" && value >= 5)
-    {
-      console.log("enter valid sem");
-    }
-    else{
+    
     this.setState({
       [name]:value
     })
+    
   }
-    console.log(name);
-  }
-
-  validate =() =>{
-
-    if(this.State.sem >=5)
-    {
-      console.log("enter valid semester");
-    }
-  }
-  render() {
+    
   
+
+  // validate =() =>{
+
+  //   if(this.state.semester >=5)
+  //   {
+  //     console.log("enter valid semester");
+  //   }
+  // }
+  render() {
+   
     return (
       <div className={classes.Form}>
         <div className={classes.Avtar}>
@@ -75,35 +90,39 @@ class details extends Component {
           <h3> User Details</h3>
         </div>
         <form className={classes.main}>
-          <div>
-            <input
+          
+            {/* <input
               type="text"
               onChange={this.onChangeHandler}
               placeholder="College name*"
               value={this.state.collegeName}
               name="collegeName"
               required
-            ></input>
+            ></input> */}
+            <div>
+            <Select changed={this.onChangeHandler} menulist ={this.state.componentcollegename.menu} name={this.state.componentcollegename.name} labelname={this.state.componentcollegename.label}></Select>
           </div>
           <div>
-            <input
+            {/* <input
               type="text"
               onChange={this.onChangeHandler}
               placeholder="Branch*"
               value={this.state.branch}
               name="branch"
               required
-            ></input>
+            ></input> */}
+            <Select changed={this.onChangeHandler} menulist ={this.state.componentbranchname.menu}  name={this.state.componentbranchname.name} labelname={this.state.componentbranchname.label}></Select>
           </div>
           <div>
-            <input
+            {/* <input
               type="text"
               onChange={this.onChangeHandler}
               placeholder="Semester"
-              value={this.state.sem}
-              name="sem"
+              value={this.state.semester}
+              name="semester"
               required
-            ></input>
+            ></input> */}
+           <Select changed={this.onChangeHandler} menulist ={this.state.componentyearname.menu} name={this.state.componentyearname.name}labelname={this.state.componentyearname.label}></Select>
           </div>
           <p>Gender*</p>
           <div
@@ -115,7 +134,8 @@ class details extends Component {
               width:'80%'
             }}
           >
-            <label>Male</label>
+            <div>
+            <label>Male</label><br></br>
             <input
               style={{ height: "20px", width: "60px" }}
               type="radio"
@@ -125,7 +145,9 @@ class details extends Component {
               name="gender"
               required
             ></input>
-            <label>Female</label>
+            </div>
+            <div>
+            <label>Female</label><br></br>
             <input
               style={{ height: "20px", width: "60px" }}
               type="radio"
@@ -135,7 +157,9 @@ class details extends Component {
               name="gender"
               required
             ></input>
-            <label>other</label>
+            </div>
+            <div>
+            <label>Other</label><br></br>
             <input
               style={{ height: "20px", width: "60px" }}
               type="radio"
@@ -145,6 +169,7 @@ class details extends Component {
               name="gender"
               required
             ></input>
+            </div>
           </div>
           <div>
             <input
@@ -157,8 +182,19 @@ class details extends Component {
               required
             ></input>
           </div>
+          <div>
+            <input
+              style={{color:'grey',height:'100px'}}
+              type="text"
+              onChange={this.onChangeHandler}
+              placeholder="About yourself"
+              value={this.state.bio}
+              name="bio"
+              required
+            ></input>
+          </div>
 
-          <div style={{ height: "35px" }}>
+          <div style={{ height: "35px" ,marginTop:"50px" }}>
             <button onClick={this.submit} className={classes.Submit}>
               Submit
             </button>

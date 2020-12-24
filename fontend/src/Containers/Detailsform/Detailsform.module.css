@@ -1,8 +1,9 @@
 .Form {
   margin: 30px auto;
-  height: 500px;
-  width: 48vw;
+  height:auto;
+  width: 50vw;
   text-align: center;
+  padding-bottom: 50px;
 }
 .Form p{
     margin:-10px 0 5px 40px;
@@ -30,11 +31,11 @@
 }
 .main div {
   height: 70px;
-  width: 97%;
+  width: 95%;
   margin: auto;
 }
 
-.main div input {
+.main div input  {
   width: 80%;
   height: 35px;
   padding: 0 20px;
@@ -42,9 +43,14 @@
   border: 1px solid grey;
   transition: all 0.3s ease-in;
 }
+
 .main div input:focus {
   outline: none;
-  border: 2px solid rgb(63, 81, 181);
+  border:none;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4;
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 .main div p {
   text-align: left;
@@ -66,7 +72,7 @@
 .Submit:focus {
   outline: none;
 }
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 500px) {
   .Form {
     margin: 50px auto;
     height: 500px;
