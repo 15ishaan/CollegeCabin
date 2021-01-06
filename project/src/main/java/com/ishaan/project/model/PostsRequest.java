@@ -2,7 +2,7 @@ package com.ishaan.project.model;
 
 public class PostsRequest {
 
-    private String username;
+    /*private String username;
     private String colName;
     private String sem;
     private String branch;
@@ -54,5 +54,5 @@ public class PostsRequest {
 
     public void setCaption(String caption) {
         this.caption = caption;
-    }
+    }*/
 }

@@ -21,8 +21,9 @@ public class Posts {
     @Lob
     @Column(length = 1000)
     private byte[] fileByte;
+    private String fileType;
 
-    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte) {
+    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte, String fileType) {
         this.id = id;
         this.username = username;
         this.colName = colName;
@@ -31,9 +32,10 @@ public class Posts {
         this.caption = caption;
         this.subject = subject;
         this.unit = unit;
-        this.noOfLikes = 0;
-        this.noOfComments = 0;
+        this.noOfLikes = noOfLikes;
+        this.noOfComments = noOfComments;
         this.fileByte = fileByte;
+        this.fileType = fileType;
     }
 
     public Posts() {
@@ -126,5 +128,13 @@ public class Posts {
 
     public void setNoOfComments(int noOfComments) {
         this.noOfComments = noOfComments;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

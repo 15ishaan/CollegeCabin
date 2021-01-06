@@ -29,7 +29,7 @@ public class PostsController {
     @Autowired
     private PostServiceImplem postService;
 
-    @PostMapping("/uploadPost")
+    /*@PostMapping("/uploadPost")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> uploadPost(@RequestBody Posts posts) {
         if (posts.getUsername() == null) {
@@ -44,25 +44,43 @@ public class PostsController {
             ResponseEntity.status(200);
             return ResponseEntity.ok("Post has been uploaded");
         }
-    }
+    }*/
 
-    @PostMapping("/uploadPost/file/{username}")
+    @PostMapping("/uploadPost/file/{username}/{fileType}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable String username) throws Exception {
-        try {
+    public ResponseEntity<?> uploadPost(@RequestParam("file") MultipartFile file, @RequestParam("caption") String caption, @PathVariable("fileType") String fileType, @PathVariable("username") String username) throws Exception {
+      //  System.out.println("ko0");
+        if (username == null) {
+            ResponseEntity.status(404);
+            return ResponseEntity.notFound().build();
+        }
+        else {
             Posts posts = new Posts();
-            User user = userRepo.findByUsername(username);
             posts.setUsername(username);
+            posts.setFileType(fileType);
+            posts.setCaption(caption);
+            User user = userRepo.findByUsername(username);
             posts.setColName(user.getCollegeName());
             posts.setBranch(user.getBranch());
             posts.setSem(user.getSem());
-            byte[] fileContent = file.getBytes();
-            posts.setFileByte(fileContent);
-            postRepo.save(posts);
-            ResponseEntity.status(200);
-            return ResponseEntity.ok("Post has been uploaded");
-        } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+            if(fileType.equals("null")) {
+                postRepo.save(posts);
+                ResponseEntity.status(200);
+                return ResponseEntity.ok("Post has been uploaded");
+            }
+            else{
+                try{
+                    byte[] fileContent = file.getBytes();
+                    posts.setFileByte(fileContent);
+                    postRepo.save(posts);
+                    ResponseEntity.status(200);
+                    return ResponseEntity.ok("Post has been uploaded");
+                }
+                catch (Exception e) {
+                    return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+                }
+            }
+
         }
     }
 
@@ -110,4 +128,16 @@ public class PostsController {
         postRepo.save(posts);
         return posts.getNoOfComments();
     }
+
+   /* public ResponseEntity<?> uploadFile(MultipartFile file, Posts posts){
+        try{
+            byte[] fileContent = file.getBytes();
+            posts.setFileByte(fileContent);
+            postRepo.save(posts);
+            ResponseEntity.status(200);
+            return ResponseEntity.ok("File has been uploaded");
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }*/
 }
