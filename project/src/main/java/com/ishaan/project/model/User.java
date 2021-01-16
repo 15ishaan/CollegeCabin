@@ -1,7 +1,6 @@
 package com.ishaan.project.model;
 
 import com.ishaan.project.validation.ValidEmail;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -26,9 +25,6 @@ public class User {
     @Size(min = 3, max = 30)
     private String lastName;
 
-    @NotNull(message = "Enter your Gender")
-    private String gender;
-
     @ValidEmail
     @NotNull(message = "Enter your email")
     private String username;
@@ -41,17 +37,33 @@ public class User {
     private boolean enabled;
     private String roles;
 
+    private String collegeName;
+    private String branch;
+    private String sem;
+    private String gender;
+    private String birthdate;
+    private String bio;
+    @Lob
+    @Column(length = 1000)
+    private byte[] picByte;
 
-    public User(int id, @NotNull(message = "Enter your first name") @Size(min = 2, max = 30) String firstName, @NotNull(message = "Enter your last name") @Size(min = 2, max = 30) String lastName, @NotNull(message = "Enter your Gender") String gender, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles) {
+
+    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
         this.username = username;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.enabled = enabled;
         this.roles = roles;
+        this.collegeName = collegeName;
+        this.branch = branch;
+        this.sem = sem;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.bio = bio;
+        this.picByte = null;
     }
 
     public User(){
@@ -79,14 +91,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getUsername() {
@@ -127,6 +131,61 @@ public class User {
         this.roles = roles;
     }
 
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getSem() {
+        return sem;
+    }
+
+    public void setSem(String sem) {
+        this.sem = sem;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public byte[] getPicByte() {
+        return picByte;
+    }
+
+    public void setPicByte(byte[] picByte) {
+        this.picByte = picByte;
+    }
 }
 
 
