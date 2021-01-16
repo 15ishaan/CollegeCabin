@@ -1,0 +1,84 @@
+.title{
+    display: flex;
+    width:550px;
+    height:60px;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+     padding:16px 24px; 
+    border-bottom:2px solid #666666 ;   
+    
+}
+.title h2{
+    font-size: 20px;
+    font-weight: 500;
+}
+.button{
+    height :40px;
+    width:40px;
+    border-radius: 50%;
+    border:none;
+    background-color: #ffffff;
+    padding-top: 4px;
+}
+
+.button:focus{
+    outline: none;
+}
+.button:hover{
+    background-color: #EFEFEF;
+}
+.user{
+    height:72px;
+}
+.user h4{
+    display: inline-block;
+    font-size: 20px;
+    margin-left: 40px;
+    color: #353535;
+}
+.content{
+    height:96px;
+}
+.caption{
+
+    width:99%;
+    border:none;
+    font-size: 18px;
+}
+.caption:focus{
+    outline: none;
+}
+.file{
+   margin:0;
+   font-size: 14px;
+   font-weight: 400;
+}
+.post{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.adddocument{
+    display: flex;
+    justify-content:left;
+}
+.adddocument div {
+    height: 52px;
+    display: flex;
+    padding: 0 10px;
+
+}
+.adddocument p {
+    font-size: 12px;
+    color:#353535 ;
+    text-align: center;
+    width:80px;
+    height: 18px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+.adddocument div img{
+    margin-top: 20px;
+    margin-right: 10px;
+}

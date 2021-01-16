@@ -1,0 +1,7 @@
+.Main
+{
+     padding:40px 3vw ;
+    display: flex;
+    align-content: stretch;
+    justify-content:space-around;
+}

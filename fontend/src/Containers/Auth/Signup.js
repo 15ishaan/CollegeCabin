@@ -26,7 +26,7 @@ class Signup extends Component {
       };
       console.log(Data);
       axios
-        .post("http://85670e5687c9.ngrok.io/registeruser", Data)
+        .post("http://00409ed8638e.ngrok.io/registeruser", Data)
         .then((response) => {
 
           if (response.status === 200) {

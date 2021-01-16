@@ -42,7 +42,7 @@ class details extends Component {
         username:localStorage.getItem("username")
       };
       console.log(Data);
-      axios.post("http://3faa179cd914.ngrok.io/UserDetails",Data,{
+      axios.post("http://00409ed8638e.ngrok.io/UserDetails",Data,{
         onUploadProgress: ProgressEvent =>{
           console.log(ProgressEvent.loaded/ProgressEvent.total*100);
         }
