@@ -23,7 +23,13 @@ public class Posts {
     private byte[] fileByte;
     private String fileType;
 
-    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte, String fileType) {
+    @Lob
+    @Column(length = 1000)
+    private byte[] picByte;
+    private String firstName;
+    private String lastName;
+
+    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName) {
         this.id = id;
         this.username = username;
         this.colName = colName;
@@ -36,6 +42,9 @@ public class Posts {
         this.noOfComments = noOfComments;
         this.fileByte = fileByte;
         this.fileType = fileType;
+        this.picByte = picByte;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Posts() {
@@ -136,5 +145,29 @@ public class Posts {
 
     public void setFileType(String fileType) {
         this.fileType = fileType;
+    }
+
+    public byte[] getPicByte() {
+        return picByte;
+    }
+
+    public void setPicByte(byte[] picByte) {
+        this.picByte = picByte;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
