@@ -26,7 +26,7 @@ class Signup extends Component {
       };
       console.log(Data);
       axios
-        .post("http://8d2d9e470158.ngrok.io/registeruser", Data)
+        .post("http://00409ed8638e.ngrok.io/registeruser", Data)
         .then((response) => {
 
           if (response.status === 200) {
@@ -36,9 +36,9 @@ class Signup extends Component {
         })
         .catch((error) => {
           console.log(error.response);
-          this.setState({
-            error:error.response.data.message
-                    })
+          // this.setState({
+          //   error:error.response.data.message
+          //           })
 
         });
 

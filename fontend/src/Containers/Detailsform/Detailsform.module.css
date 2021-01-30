@@ -1,0 +1,82 @@
+.Form {
+  margin: 30px auto;
+  height:auto;
+  width: 50vw;
+  text-align: center;
+  padding-bottom: 50px;
+}
+.Form p{
+    margin:-10px 0 5px 40px;
+    float:left;
+    
+}
+.Form label {
+ color :grey;
+}
+.Avtar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Avtar p {
+  height: 50px;
+  width: 50px;
+  background: rgb(245, 0, 87);
+  border-radius: 50%;
+  margin-bottom: 0;
+}
+.Avtar h3 {
+  font-weight: 400;
+  font-size: 20px;
+}
+.main div {
+  height: 70px;
+  width: 95%;
+  margin: auto;
+}
+
+.main div input  {
+  width: 80%;
+  height: 35px;
+  padding: 0 20px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  transition: all 0.3s ease-in;
+}
+
+.main div input:focus {
+  outline: none;
+  border:none;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4;
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.main div p {
+  text-align: left;
+  padding: 0 20px;
+}
+.Submit {
+  display: inline-Block;
+  font-size: 18px;
+  border: none;
+  width: 90%;
+  height: 35px;
+  border-radius: 5px;
+  background-color: rgb(63, 81, 181);
+  color: white;
+}
+.Submit:hover {
+  background-color: #303f9f;
+}
+.Submit:focus {
+  outline: none;
+}
+@media only screen and (max-width: 500px) {
+  .Form {
+    margin: 50px auto;
+    height: 500px;
+    width: 80vw;
+    text-align: center;
+  }
+}

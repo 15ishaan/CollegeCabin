@@ -26,11 +26,12 @@ class signin extends Component {
     };
 
     axios
-      .post("http://8d2d9e470158.ngrok.io/login", Data)
+      .post("http://00409ed8638e.ngrok.io/login", Data)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data.jwt);
+          localStorage.setItem("username",this.state.username);
           // localStorage.setItem("Userdata",response.data.user.username);
           this.toHome();
         }
@@ -44,7 +45,7 @@ class signin extends Component {
         // if (error.response.status === 404) {
         //   this.setState({ wrongpass:"*wrong credentials*" });
         // }
-          this.setState({wrongpass: error.response.data.message});
+          //this.setState({wrongpass: error.response.data.message});
       });
   };
   toHome = () => {
