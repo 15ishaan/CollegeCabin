@@ -17,6 +17,7 @@ public class Posts {
     private String unit;
     private int noOfLikes;
     private int noOfComments;
+    private boolean liked;
 
     @Lob
     @Column(length = 1000)
@@ -29,7 +30,7 @@ public class Posts {
     private String firstName;
     private String lastName;
 
-    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName) {
+    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, boolean liked, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName) {
         this.id = id;
         this.username = username;
         this.colName = colName;
@@ -40,6 +41,7 @@ public class Posts {
         this.unit = unit;
         this.noOfLikes = noOfLikes;
         this.noOfComments = noOfComments;
+        this.liked = liked;
         this.fileByte = fileByte;
         this.fileType = fileType;
         this.picByte = picByte;
@@ -169,5 +171,13 @@ public class Posts {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }

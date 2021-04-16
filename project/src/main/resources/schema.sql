@@ -44,7 +44,8 @@ create table POSTS(
      FILETYPE VARCHAR(128),
      PICBYTE IMAGE,
      FIRSTNAME VARCHAR(128),
-     LASTNAME VARCHAR(128)
+     LASTNAME VARCHAR(128),
+     LIKED BOOLEAN
 );
 
 drop table if exists COMMENTS;

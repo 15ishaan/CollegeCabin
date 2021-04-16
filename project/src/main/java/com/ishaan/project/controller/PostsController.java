@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Iterator;
+
 @RestController
 public class PostsController {
 
@@ -92,20 +94,39 @@ public class PostsController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Iterable<Posts> showAllPosts(@PathVariable String username) {
         User user = userRepo.findByUsername(username);
-        return postService.findByBranchAndSemAndColName(user.getBranch(), user.getSem(), user.getCollegeName());
+        Iterable<Posts> posts = postService.findByBranchAndSemAndColName(user.getBranch(), user.getSem(), user.getCollegeName());
+        Iterator<Posts> it = posts.iterator();
+        while(it.hasNext())
+        {
+            Posts post = it.next();
+            Likes likes = likeRepo.findByPostIdAndUsername(post.getId(), username);
+            if(likes == null || likes.isLiked() == false) post.setLiked(false);
+            else post.setLiked(true);
+            postRepo.save(post);
+        }
+        return posts;
     }
 
     @GetMapping("/myPost/{username}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Iterable<Posts> showMyPosts(@PathVariable String username) {
-        return postService.findByUsername(username);
+        Iterable<Posts> posts = postService.findByUsername(username);
+        Iterator<Posts> it = posts.iterator();
+        while(it.hasNext())
+        {
+            Posts post = it.next();
+            Likes likes = likeRepo.findByPostIdAndUsername(post.getId(), username);
+            if(likes == null || likes.isLiked() == false) post.setLiked(false);
+            else post.setLiked(true);
+            postRepo.save(post);
+        }
+        return posts;
     }
 
     @PostMapping("/addLike/{username}/{postId}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public int addLike(@PathVariable("username") String username, @PathVariable("postId") int id) {
-        Likes likes = likeRepo.findByUsername(username);
-        if(likes == null) likes = new Likes();
+        Likes likes = new Likes();
         User user = userRepo.findByUsername(username);
         likes.setPicByte(user.getPicByte());
         likes.setFirstName(user.getFirstName());
@@ -123,7 +144,7 @@ public class PostsController {
     @PostMapping("/removeLike/{username}/{postId}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public int removeLike(@PathVariable("username") String username, @PathVariable("postId") int id) {
-        Likes likes = likeRepo.findByUsername(username);
+        Likes likes = likeRepo.findByPostIdAndUsername(id, username);
         likes.setLiked(false);
         likeRepo.save(likes);
         Posts posts = postRepo.findById(id);
@@ -155,6 +176,11 @@ public class PostsController {
     public Iterable<Comments> showComments(@PathVariable("postId") int id){
         return CommentsRepo.findByPostId(id);
     }
+
+    @PostMapping("/showLikes/{postId}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public Likes showLikes(@PathVariable("postId") int id){
+        return likeRepo.findByPostId(id); }
 
    /* public ResponseEntity<?> uploadFile(MultipartFile file, Posts posts){
         try{

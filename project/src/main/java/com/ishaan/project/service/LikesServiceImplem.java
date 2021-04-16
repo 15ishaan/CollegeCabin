@@ -14,4 +14,8 @@ public class LikesServiceImplem {
     public Likes findByUsername(String username){
         return repo.findByUsername(username);
     }
+
+    public Likes findByPostId(int id){ return repo.findByPostId(id);}
+
+    public Likes findByPostIdAndUsername(int id, String username){ return repo.findByPostIdAndUsername(id, username);}
 }
