@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import classes from "./Signup.module.css";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import axios from "../../Components/hoc/axios";
+import Loader from "../../Components/reusable/Loader/Loader"
 class signin extends Component {
   state = {
     name: "",
     username: "",
     password: "",
     wrongpass: false,
+    loading : false,
   };
 
   onChangeHandler = (event) => {
@@ -24,20 +26,28 @@ class signin extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-
+     this.setState({
+       loading :true,
+     })
     axios
-      .post("http://00409ed8638e.ngrok.io/login", Data)
+      .post("/login", Data)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data.jwt);
-          localStorage.setItem("username",this.state.username);
+          localStorage.setItem("username", this.state.username);
           // localStorage.setItem("Userdata",response.data.user.username);
+          this.setState({
+            loading: false,
+          });
           this.toHome();
         }
         this.props.loginname(this.state.username);
       })
       .catch((error) => {
+        this.setState({
+          loading: false,
+        });
         // if(error.response.status === 406)
         // {
         //   this.setState({ wrongpass: error.response.data });
@@ -45,7 +55,7 @@ class signin extends Component {
         // if (error.response.status === 404) {
         //   this.setState({ wrongpass:"*wrong credentials*" });
         // }
-          //this.setState({wrongpass: error.response.data.message});
+        //this.setState({wrongpass: error.response.data.message});
       });
   };
   toHome = () => {
@@ -61,8 +71,15 @@ class signin extends Component {
     if (this.state.wrongpass != null) {
       wrongpassview = this.state.wrongpass;
     }
-    return (
-      <div className={classes.Form}>
+
+    let content ;
+
+    if(this.state.loading === true)
+    {
+      content = <Loader></Loader>
+    }
+    else{
+      content = <div className={classes.Form}>
         <div className={classes.Avtar}>
         <p>
         <svg width="50px" height="46px"  color="white" viewBox="0 0 16 16" className="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +94,7 @@ class signin extends Component {
           
           <div>
           <input type="text" 
-          placeholder="Username *"
+          placeholder="Email *"
           value={this.state.username}
           name="username"
           onChange={this.onChangeHandler}
@@ -103,7 +120,12 @@ class signin extends Component {
 
         </form>
       </div>
-
+    }
+    return (
+      <div>
+        {content}
+      </div>
+      
     );
   }
 }

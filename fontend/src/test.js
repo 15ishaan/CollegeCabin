@@ -1,16 +1,16 @@
-import Axios from "axios";
+import axios from "./Components/hoc/axios";
 import React, { Component } from "react";
-import pdf from "./Iconpack/DSTL final file.pdf";
-import Pdf from "./Components/reusable/pdf";
-
+import Postcard from "./Containers/Postcard/Postcard";
+import Loader from "./Components/reusable/Loader/Loader"
 class test extends Component {
   state = {
-    pic:""
+    pic:"",
+    loading :true,
   };
 
   submit = (e) => {
     e.preventDefault();
-    Axios.get("http://5fb8c1858406.ngrok.io/user/manassaxen160601@gmail.com")
+    axios.get("http://5fb8c1858406.ngrok.io/user/manassaxen160601@gmail.com")
       .then((response) => {
         console.log(response);
         this.setState({
@@ -23,12 +23,10 @@ class test extends Component {
   };
 
   render() {
-    return <div>
-      {/* <a href="data:application/pdf;base64,[base64]" download="file.pdf">hello</a>
-       */}
-        <button onClick={this.submit}>click</button><br></br>
-       <embed type="application/pdf" src={"data:application/pdf;base64," + this.state.pic} height='600px' width='80%'/>
-    </div>;
+    return (<div>
+      <Loader></Loader>
+    
+    </div>);
   }
 }
 

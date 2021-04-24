@@ -5,6 +5,7 @@ import classes from './Uploadpost.module.css';
 import Uploadpost from './Uploadpostmodal/Uploadpostmodal';
 class uploadpost extends Component{
 
+    
 
     render()
     {
@@ -28,20 +29,33 @@ class uploadpost extends Component{
     <h4>Article</h4>
 </div>
         return (
-            <div className={classes.Main}>
-                <div >
-                    <Uploadpost display = {startpost}/>
-                </div>
-                <div className ={classes.addcontent}>
-                  <Uploadpost display ={Photo}/>
-                  <Uploadpost display ={Document}/>
-                  {/* <Uploadpost display = {Article}/> */}
-                  {/* {Photo} */}
-
-                </div>
-
+          <div className={classes.Main}>
+            <div>
+              <Uploadpost
+                onpostupload={() => {
+                  this.props.onpostupload();
+                }}
+                display={startpost}
+              />
             </div>
-        )
+            <div className={classes.addcontent}>
+              <Uploadpost
+                onpostupload={() => {
+                  this.props.onpostupload();
+                }}
+                display={Photo}
+              />
+              <Uploadpost
+                onpostupload={() => {
+                  this.props.onpostupload();
+                }}
+                display={Document}
+              />
+              {/* <Uploadpost display = {Article}/> */}
+              {/* {Photo} */}
+            </div>
+          </div>
+        );
     }
 }
 

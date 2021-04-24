@@ -1,0 +1,28 @@
+.main{
+    margin: 8px 12px ;
+    display: flex;
+    flex-direction: row;
+    min-height:40px;
+
+}
+.userimg img
+{
+    width: 40px;
+    height:40px;
+    border-radius: 50%;
+}
+.comment{
+    background-color:#F2F2F2;
+    margin: 0 10px;
+    width:552px;
+    padding:8px 14px;
+    border-radius: 10px;
+}
+.userinfo p{
+    font-size: 11px;
+    color: #7c7c7c;
+}
+.commentdata{
+    padding:10px 0px 10px 0px;
+    
+}

@@ -18,12 +18,13 @@ class layout extends Component {
             loggedin = 'Signin';
         }
         return(
-            <div style={{ backgroundColor:"#F3F2EF" , minHeight:'80vh' , paddingTop:'70px'}}>
+            <div>
 
                 
                 {/* <Link to='/Signin'> Signin</Link>
                 <Link to='/profile/manas'> Userprofile</Link> */}
                     <Navbar loggedin={loggedin}/>
+                   <div style={{height:'90px'}}></div>
                 <Switch>
                     <Route path='/newsfeed/:username' exact render={() => (<Newsfeed></Newsfeed>)} ></Route>
                     <Route path='/Signup' exact render={() => (<Signup></Signup>)}></Route>
@@ -32,6 +33,7 @@ class layout extends Component {
                     <Route path='/test' exact render={() => (<Test></Test>)}></Route>
                     <Route path='/editdetails/:username' exact render={()=> (<Details></Details>)}></Route>
                 </Switch>
+             
             </div>
         );
 

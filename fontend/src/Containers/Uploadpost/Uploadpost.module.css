@@ -2,7 +2,7 @@
     padding:10px 8px;
     height:120px;
     background-color: white;
-    width: 41vw;
+    width: 552px;
     box-sizing: border-box;
     display: inline-block;
     border-radius: 10px;
@@ -39,9 +39,8 @@
     height: 58px;
     width: 100%;
     display: flex;
-    align-items: center;
-   justify-content: space-around;
-
+    align-items:center;
+    justify-content: space-around;
 }
 .addcontent div{
     width: 110px;
@@ -49,16 +48,17 @@
     margin-top:10px ;
     display: flex;
     flex-direction: row;
+    align-items: top;
     justify-content: center;
     cursor: pointer;
 }
 
-.addcontent h4:hover{
+.addcontent :hover{
     background-color: #F3F2EF;
 }
 .addcontent div img{
 
-   padding:18px 6px 0 6px;
+   padding:2px 6px 0 6px;
    
 }
 
@@ -66,4 +66,13 @@
     color: #666666;
     padding: 4px 0px;
     border-radius: 25px;
+}
+
+
+
+@media only screen and (max-width: 350px)
+{
+  .Main{
+    width:100%;
+  }
 }

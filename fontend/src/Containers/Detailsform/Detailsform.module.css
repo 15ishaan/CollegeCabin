@@ -1,9 +1,14 @@
+
+::-webkit-scrollbar{
+  display: none;
+}
 .Form {
   margin: 30px auto;
   height:auto;
   width: 50vw;
   text-align: center;
   padding-bottom: 50px;
+
 }
 .Form p{
     margin:-10px 0 5px 40px;

@@ -1,45 +1,55 @@
 import React, { Component } from "react";
 import classes from "./Signup.module.css";
-import axios from 'axios';
+import axios from '../../Components/hoc/axios';
 import { withRouter } from "react-router-dom";
 
 class Signup extends Component {
   state = {
-    name: "",
+    firstname: "",
     email: "",
-    username: "",
+    lastname: "",
     password: "",
     registered: false,
     errors: {},
     error:'',
+    loading :false,
   };
   submit = (e) => {
     e.preventDefault();
+
     if (this.validate()) {
       const Data = {
-        firstName: this.state.name,
-        lastName: this.state.username,
+        firstName: this.state.firstname,
+        lastName: this.state.lastname,
         username: this.state.email,
         password: this.state.password,
         confirmPassword:this.state.password,
         roles:"admin"
       };
       console.log(Data);
-      axios
-        .post("http://00409ed8638e.ngrok.io/registeruser", Data)
-        .then((response) => {
 
+      this.setState({
+        loading:true,
+      })
+      axios
+        .post("/registeruser", Data)
+        .then((response) => {
           if (response.status === 200) {
-              this.setState({ registered: true });
+            this.setState({ 
+            registered: true,
+            loading:false 
+          });
             this.props.history.push("/Signin");
           }
         })
         .catch((error) => {
+          this.setState({
+            loading:false,
+          })
           console.log(error.response);
           // this.setState({
           //   error:error.response.data.message
           //           })
-
         });
 
       
@@ -74,14 +84,14 @@ class Signup extends Component {
     let errors = {};
     let isValid = true;
 
-    if (!input["name"]) {
+    if (!input["firstname"]) {
       isValid = false;
-      errors["name"] = "Please enter your name.";
+      errors["firstname"] = "Please enter your Firstname.";
     }
 
-    if (!input["username"]) {
+    if (!input["lastname"]) {
       isValid = false;
-      errors["username"] = "Please enter your Username.";
+      errors["lastname"] = "Please enter your Lastname.";
     }
 
     if (!input["email"]) {
@@ -132,9 +142,9 @@ class Signup extends Component {
         <form className={classes.main}>
           <div>
           <input type="text" 
-          placeholder="Name *"
-          value={this.state.name}
-          name="name"
+          placeholder="Firstname *"
+          value={this.state.firstname}
+          name="firstname"
           onChange={this.onChangeHandler} 
           ></input>
            <p style={{ color: "red", fontSize: "10px" }}>
@@ -143,9 +153,9 @@ class Signup extends Component {
           </div>
           <div>
           <input type="text" 
-          placeholder="Username *"
-          value={this.state.username}
-          name="username"
+          placeholder="Lastname *"
+          value={this.state.lastname}
+          name="lastname"
           onChange={this.onChangeHandler}
           ></input>
           <p style={{ color: "red", fontSize: "10px" }}>

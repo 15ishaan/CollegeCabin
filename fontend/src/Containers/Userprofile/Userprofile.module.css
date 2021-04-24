@@ -24,8 +24,9 @@
     height : 150px;
     width :150px;
     border-radius: 50%;
+    background-color: white;
     position: absolute;
-    bottom: -60px;
+    bottom: -90px;
     left : 50px;
     position: relative;
 }
@@ -43,7 +44,7 @@
 .Username{
     font-size: 25px;
     position: absolute;
-    bottom: -20px;
+    bottom: 0px;
     left : 220px;
 }
 .Info{

@@ -1,6 +1,7 @@
 .Form{
-    margin: 50px auto;
-   height:500px;
+    margin:0 auto;
+    /* padding:15vh 0; */
+   height:40vh;
    width:48vw;
    text-align: center;
 }
@@ -8,7 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    margin-bottom: 20px;
 }
 .Avtar p{
     height: 50px;
@@ -25,6 +26,7 @@
     height: 70px;
     width:97%;
     margin:auto;
+    box-sizing: border-box;
 }
 
 .main div input{
@@ -62,8 +64,8 @@
 @media only screen and (max-width:430px)
 {
     .Form{
-        margin: 50px auto;
-       height:500px;
+        margin: 0px auto;
+       height:40vh;
        width:80vw;
        text-align: center;
     }

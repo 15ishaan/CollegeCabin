@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import classes from "../Detailsform/Detailsform.module.css";
-import axios from 'axios'
+import axios from '../../Components/hoc/axios'
 import Select from '../../Components/reusable/Selectinput';
 class details extends Component {
   state = {
@@ -42,13 +42,15 @@ class details extends Component {
         username:localStorage.getItem("username")
       };
       console.log(Data);
-      axios.post("http://00409ed8638e.ngrok.io/UserDetails",Data,{
+      axios.post("/UserDetails",Data,{
         onUploadProgress: ProgressEvent =>{
           console.log(ProgressEvent.loaded/ProgressEvent.total*100);
         }
       })
       .then((response) =>{
+
         console.log(response);
+        this.props.history.push("/profile/"+localStorage.getItem("username"))
       })
       .catch((error)=>{
         console.log(error);

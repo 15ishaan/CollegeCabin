@@ -61,13 +61,12 @@
 }
 .adddocument{
     display: flex;
-    justify-content:left;
 }
 .adddocument div {
     height: 52px;
     display: flex;
     padding: 0 10px;
-
+    align-items: center;
 }
 .adddocument p {
     font-size: 12px;
@@ -79,6 +78,5 @@
     text-overflow: ellipsis;
 }
 .adddocument div img{
-    margin-top: 20px;
     margin-right: 10px;
 }
