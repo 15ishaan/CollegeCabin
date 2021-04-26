@@ -73,7 +73,7 @@ public class RegistrationController {
             mailMessage.setSubject("Complete Registration!");
             mailMessage.setFrom("gomailsender@gmail.com");
             mailMessage.setText("To confirm your account, please click here : "
-                    +"http://abeb90bb4f27.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
+                    +"http://326d3726c020.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
 
             emailService.sendEmail(mailMessage);
 
@@ -89,7 +89,7 @@ public class RegistrationController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> confirmUserAccount(@RequestParam("token")String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-        System.out.println(token);
+        //System.out.println(token);
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
             user.setEnabled(true);
@@ -137,7 +137,7 @@ public class RegistrationController {
                 mailMessage.setSubject("Complete Registration!");
                 mailMessage.setFrom("gomailsender@gmail.com");
                 mailMessage.setText("This is new confirmation link, to confirm your account, please click here: "
-                        +"http://abeb90bb4f27.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
+                        +"http://326d3726c020.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
                         + "\n\n\n\nRegards: @Team ClickNShip");
 
                 emailService.sendEmail(mailMessage);

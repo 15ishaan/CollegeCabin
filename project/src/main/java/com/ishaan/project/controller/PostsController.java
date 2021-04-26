@@ -35,22 +35,29 @@ public class PostsController {
     @Autowired
     private LikesRepository likeRepo;
 
-    /*@PostMapping("/uploadPost")
+    @PostMapping("/uploadStatus/{username}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> uploadPost(@RequestBody Posts posts) {
-        if (posts.getUsername() == null) {
+    public ResponseEntity<?> uploadPost(@RequestParam String caption, @PathVariable String username) {
+        if (username == null) {
             ResponseEntity.status(404);
             return ResponseEntity.notFound().build();
         } else {
-            User user = userRepo.findByUsername(posts.getUsername());
+            Posts posts = new Posts();
+            posts.setUsername(username);
+            posts.setFileType("null");
+            posts.setCaption(caption);
+            User user = userRepo.findByUsername(username);
             posts.setColName(user.getCollegeName());
             posts.setBranch(user.getBranch());
             posts.setSem(user.getSem());
+            posts.setPicByte(user.getPicByte());
+            posts.setFirstName(user.getFirstName());
+            posts.setLastName(user.getLastName());
             postRepo.save(posts);
             ResponseEntity.status(200);
             return ResponseEntity.ok("Post has been uploaded");
         }
-    }*/
+    }
 
     @PostMapping("/uploadPost/file/{username}/{fileType}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -71,20 +78,14 @@ public class PostsController {
             posts.setPicByte(user.getPicByte());
             posts.setFirstName(user.getFirstName());
             posts.setLastName(user.getLastName());
-            if (fileType.equals("null")) {
+            try {
+                byte[] fileContent = file.getBytes();
+                posts.setFileByte(fileContent);
                 postRepo.save(posts);
                 ResponseEntity.status(200);
                 return ResponseEntity.ok("Post has been uploaded");
-            } else {
-                try {
-                    byte[] fileContent = file.getBytes();
-                    posts.setFileByte(fileContent);
-                    postRepo.save(posts);
-                    ResponseEntity.status(200);
-                    return ResponseEntity.ok("Post has been uploaded");
-                } catch (Exception e) {
-                    return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
-                }
+            } catch (Exception e) {
+                return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
             }
 
         }
@@ -126,7 +127,8 @@ public class PostsController {
     @PostMapping("/addLike/{username}/{postId}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public int addLike(@PathVariable("username") String username, @PathVariable("postId") int id) {
-        Likes likes = new Likes();
+        Likes likes = likeRepo.findByPostIdAndUsername(id, username);
+        if(likes == null) likes = new Likes();
         User user = userRepo.findByUsername(username);
         likes.setPicByte(user.getPicByte());
         likes.setFirstName(user.getFirstName());

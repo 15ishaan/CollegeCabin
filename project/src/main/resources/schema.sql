@@ -1,3 +1,4 @@
+
 drop table if exists USER;
 
 create table USER(
@@ -15,7 +16,8 @@ create table USER(
      BIO VARCHAR(128),
      BIRTHDATE VARCHAR(128),
      PICBYTE IMAGE,
-     ENABLED BOOLEAN
+     ENABLED BOOLEAN,
+     BOOKMARKS VARCHAR(128)
 );
 
 drop table if exists CONFIRMATIONTOKEN;
@@ -73,5 +75,20 @@ create table LIKES
     FIRSTNAME VARCHAR(128),
     LASTNAME  VARCHAR(128)
 
+);
+
+drop table if exists CHATMESSAGE;
+
+create table CHATMESSAGE
+(
+    ID INTEGER AUTO_INCREMENT,
+    CHATID VARCHAR(128),
+    SENDERID INTEGER,
+    RECEPIENTID INTEGER,
+    SENDERNAME VARCHAR(128),
+    RECEPIENTNAME VARCHAR(128),
+    CONTENT VARCHAR(128),
+    TIMESTAMP DATE,
+    STATUS ENUM('value_1', 'value_2')
 );
 

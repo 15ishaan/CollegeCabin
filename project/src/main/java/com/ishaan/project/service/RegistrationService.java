@@ -15,6 +15,7 @@ import java.util.List;
 
 @Service
 public class RegistrationService implements UserDetailsService {
+
     @Autowired
     private RegistrationRepository repo;
 
@@ -24,6 +25,9 @@ public class RegistrationService implements UserDetailsService {
         user.setEnabled(false);
         return repo.save(user);   // saving user
     }
+
+    public User fetchUserById(int id){ return  repo.findById(id); }
+
 
     public User fetchUserByUsername(String username){
         return repo.findByUsername(username);

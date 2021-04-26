@@ -47,8 +47,9 @@ public class User {
     @Column(length = 1000)
     private byte[] picByte;
 
+    private String Bookmarks;
 
-    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio) {
+    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,7 +64,8 @@ public class User {
         this.gender = gender;
         this.birthdate = birthdate;
         this.bio = bio;
-        this.picByte = null;
+        this.picByte = picByte;
+        Bookmarks = bookmarks;
     }
 
     public User(){
@@ -185,6 +187,14 @@ public class User {
 
     public void setPicByte(byte[] picByte) {
         this.picByte = picByte;
+    }
+
+    public String getBookmarks() {
+        return Bookmarks;
+    }
+
+    public void setBookmarks(String bookmarks) {
+        Bookmarks = bookmarks;
     }
 }
 
