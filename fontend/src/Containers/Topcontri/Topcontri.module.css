@@ -1,0 +1,51 @@
+.main{
+        width:300px;
+    height: 300px;
+    border-radius: 15px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15);
+    background-color: white;  
+    position:fixed; 
+}
+.main h2{
+    font-weight: 400;
+}
+.list{
+    padding: 10px 0;
+}
+ul{
+    list-style-type: none;
+}
+li{
+    padding :12px 0 12px  0;
+    border-bottom:1px solid grey;
+}
+li:nth-child(odd){
+    background-color:  rgb(243,242,239) ;
+}
+.main h2{
+    margin:5px auto ;
+    text-align: center;
+}
+
+.user , .user:hover , .user:visited{
+    display: flex;
+    flex-direction: row;
+    color: black;
+    text-decoration: none;
+}
+.user h3{
+    font-size: 18px;
+    color:#303030;
+}
+.user h5{
+    font-size: 12px;
+     color: #282828;
+}
+
+
+.userimg{
+    border-radius: 50%;
+    height:50px;
+    width: 50px;
+    padding: 0 10px;
+}

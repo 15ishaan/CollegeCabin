@@ -12,12 +12,17 @@ class commentblock extends Component{
      }
 
      docommentHandler =(event) =>{
-       let  comment = this.state.docomment;
+       event.preventDefault();
+        let  comment = this.state.docomment;
+      //  console.log(comment)
+       let fd = new FormData();
+
+       fd.append("comment", comment);
        let username = localStorage.getItem("username");
         axios
-          .post("/addComment/" + username +'/' + this.props.postkey , comment)
+          .post("/addComment/" + username +'/' + this.props.postdata.id , fd)
           .then((res) => {
-            console.log(res);
+            this.props.inccomment(res.data);
             this.setState({
               docomment:""
             })
@@ -29,11 +34,12 @@ class commentblock extends Component{
      }
      onnewcommentHandler=()=>{
        axios
-         .post("/showComments" + "/" + this.props.postkey)
+         .post("/showComments" + "/" + this.props.postdata.id)
          .then((res) => {
            this.setState({
              comments: res.data,
            });
+
            console.log(res);
          })
          .catch((err) => {
@@ -43,7 +49,7 @@ class commentblock extends Component{
     componentDidMount(){
         axios
           .post(
-            "/showComments" +'/' + this.props.postkey)
+            "/showComments" +'/' + this.props.postdata.id)
           .then((res) => {
             
             this.setState({
@@ -80,7 +86,7 @@ class commentblock extends Component{
     }
     
     render(){
-        let comments = this.state.comments.map((comment) => (<Showcomment commentdata ={comment}/>))
+        let comments = this.state.comments.map((comment) => (<Showcomment key={comment.id} commentdata ={comment}/>))
         return (
           <div className={classes.wrap}>
             <div className={classes.emojipicker}>
@@ -93,7 +99,7 @@ class commentblock extends Component{
                 <img
                   alt="userimage"
                   className={classes.commentimg}
-                  src="https://media-exp1.licdn.com/dms/image/C5103AQG51Pq3ZWpNqg/profile-displayphoto-shrink_800_800/0/1587154224992?e=1616630400&v=beta&t=GsPJPpOROPrIkSH_XmLhXUece4_MaZi45R9oaHVn5qM"
+                  src={"data:img/jpg;base64," + this.props.postdata.picByte}
                 ></img>
                 <input
                   type="text"

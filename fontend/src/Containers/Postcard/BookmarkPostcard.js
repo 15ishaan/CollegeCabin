@@ -1,26 +1,55 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react'
+import { Component } from 'react'
+import { withRouter } from 'react-router';
 import classes from "./Postcard.module.css";
 import Comments from "../Commentblock/Commentblock";
-import axios from "../../Components/hoc/axios";
-class postcard extends Component {
+import axios from "../../Components/hoc/axios"
+
+
+
+class bookmarkpostcard extends Component {
   state = {
-    liked: this.props.postdata.liked,
-    noOfLikes: this.props.postdata.noOfLikes,
+    username: "",
+    id: this.props.postid,
+    colName: "",
+    bookmarked: "",
+    fileType: "",
+    fileByte: "",
+    noOfLikes: "",
+    noOfComments: "",
+    liked: "",
     showcomment: 0,
-    bookmarked: this.props.postdata.bookmarked,
-    noOfComments: this.props.postdata.noOfComments,
+    picByte: "",
   };
+  componentDidMount() {
+    axios
+      .get("/post/" + this.state.id)
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          username: res.data.username,
+          name: res.data.firstName + res.data.lastName,
+          colName: res.data.colName,
+          bookmarked: res.data.bookmarked,
+          fileType: res.data.fileType,
+          fileByte: res.data.fileByte,
+          caption: res.data.caption,
+          noOfLikes: res.data.noOfLikes,
+          noOfComments: res.data.noOfComments,
+          liked: res.data.liked,
+          picByte: res.data.picByte,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-  // componentDidMount(){
-  //   axios.post
-  // }
-
-  likeHandler = (event) => {
+  likeHandler = () => {
     let username = localStorage.getItem("username");
     this.state.liked === false
       ? axios
-          .post("/addLike/" + username + "/" + this.props.postdata.id)
+          .post("/addLike/" + username + "/" + this.state.id)
           .then((res) => {
             this.setState({
               noOfLikes: res.data,
@@ -32,7 +61,7 @@ class postcard extends Component {
             console.log(err);
           })
       : axios
-          .post("/removeLike/" + username + "/" + this.props.postdata.id)
+          .post("/removeLike/" + username + "/" + this.state.id)
           .then((res) => {
             this.setState({
               noOfLikes: res.data,
@@ -55,9 +84,9 @@ class postcard extends Component {
     let username = localStorage.getItem("username");
     let url;
     if (this.state.bookmarked) {
-      url = "removeFromBookmark/" + this.props.postdata.id + "/" + username;
+      url = "/removeFromBookmark/" + this.state.id + "/" + username;
     } else {
-      url = "addBookmark/" + this.props.postdata.id + "/" + username;
+      url = "/addBookmark/" + this.state.id + "/" + username;
     }
     axios
       .post(url)
@@ -78,14 +107,14 @@ class postcard extends Component {
     });
   };
   render() {
-    console.log(this.props);
+    console.log(this.state);
     return (
       <div className={classes.head}>
         <div className={classes.main}>
           <div className={classes.userinfo}>
             <img
               className={classes.userimage}
-              src={"data:img/jpg;base64," + this.props.postdata.picByte}
+              src={"data:img/jpg;base64," + this.state.picByte}
             ></img>
             <div
               style={{
@@ -95,31 +124,19 @@ class postcard extends Component {
               }}
             >
               <div>
-                <h4>
-                  {this.props.postdata.firstName + this.props.postdata.lastName}
-                </h4>
-                <p>{this.props.postdata.colName}</p>
+                <h4>{this.state.name}</h4>
+                <p>{this.state.colName}</p>
               </div>
               {this.state.bookmarked === true ? (
                 <img
                   onClick={this.onBookmarkHandler}
-                  style={{
-                    height: "30px",
-                    width: "30px",
-                    paddingTop: "8px",
-                    cursor: "pointer",
-                  }}
+                  style={{ height: "30px", width: "30px", paddingTop: "8px" }}
                   src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPHBhdGggZD0iTTQxNi42NjcsMEg5NS4zMzRjLTguMjg0LDAtMTUsNi43MTYtMTUsMTV2NDgyYzAsNi4wNjcsMy42NTUsMTEuNTM2LDkuMjYsMTMuODU4YzEuODU2LDAuNzY5LDMuODA1LDEuMTQyLDUuNzM3LDEuMTQyICAgIGMzLjkwMywwLDcuNzQtMS41MjMsMTAuNjA5LTQuMzk0bDE1MC4wNjMtMTUwLjA2Mkw0MDYuMDYsNTA3LjYwNmM0LjI5LDQuMjkxLDEwLjc0MSw1LjU3MywxNi4zNDcsMy4yNTIgICAgYzUuNjA1LTIuMzIyLDkuMjYtNy43OTEsOS4yNi0xMy44NThWMTVDNDMxLjY2Nyw2LjcxNiw0MjQuOTUyLDAsNDE2LjY2NywweiIgZmlsbD0iI2Y1MDA1NyIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiI+PC9wYXRoPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjwvZz48L3N2Zz4="
                 />
               ) : (
                 <img
                   onClick={this.onBookmarkHandler}
-                  style={{
-                    height: "30px",
-                    width: "30px",
-                    paddingTop: "8px",
-                    cursor: "pointer",
-                  }}
+                  style={{ height: "30px", width: "30px", paddingTop: "8px" }}
                   src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPHBhdGggZD0iTTQxNi42NjcsMEg5NS4zMzNjLTguMjg0LDAtMTUsNi43MTYtMTUsMTV2NDgyYzAsNi4wNjcsMy42NTUsMTEuNTM2LDkuMjYsMTMuODU4YzEuODU2LDAuNzY5LDMuODA1LDEuMTQyLDUuNzM3LDEuMTQyICAgIGMzLjkwNCwwLDcuNzQtMS41MjMsMTAuNjEtNC4zOTRsMTUwLjA2My0xNTAuMDYxTDQwNi4wNiw1MDcuNjA2YzQuMjksNC4yOSwxMC43NDIsNS41NzMsMTYuMzQ3LDMuMjUyICAgIGM1LjYwNS0yLjMyMiw5LjI2LTcuNzkxLDkuMjYtMTMuODU4VjE1QzQzMS42NjcsNi43MTYsNDI0Ljk1MSwwLDQxNi42NjcsMHogTTI1Ni4wMDIsMzIxLjMzMmMtMy45NzgsMC03Ljc5MywxLjU4LTEwLjYwNiw0LjM5NCAgICBMMTEwLjMzMyw0NjAuNzg3VjMwaDI5MS4zMzN2NDMwLjc4NUwyNjYuNjA5LDMyNS43MjZDMjYzLjc5NiwzMjIuOTEyLDI1OS45ODEsMzIxLjMzMiwyNTYuMDAyLDMyMS4zMzJ6IiBmaWxsPSIjZjUwMDU3IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIj48L3BhdGg+Cgk8L2c+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPC9nPjwvc3ZnPg=="
                 />
               )}
@@ -127,27 +144,19 @@ class postcard extends Component {
           </div>
           <div className={classes.postdata}>
             <div className={classes.postcaption}>
-              <p>{this.props.postdata.caption}</p>
+              <p>{this.state.caption}</p>
             </div>
             <div className={classes.postmedia}>
-              {this.props.postdata.fileType !== "null" ? (
-                this.props.postdata.fileType === "image" ? (
-                  <img
-                    alt="post img"
-                    src={"data:img/jpg;base64," + this.props.postdata.fileByte}
-                  ></img>
-                ) : (
-                  <iframe
-                    style={{ width: "100%", height: "500px" }}
-                    frameborder="0"
-                    src={
-                      "data:application/pdf;base64," +
-                      this.props.postdata.fileByte
-                    }
-                  />
-                )
+              {this.state.fileType === "image" ? (
+                <img
+                  alt="post img"
+                  src={"data:img/jpg;base64," + this.state.fileByte}
+                ></img>
               ) : (
-                <div></div>
+                <embed
+                  style={{ width: "100%", height: "500px" }}
+                  src={"data:application/pdf;base64," + this.state.fileByte}
+                />
               )}
             </div>
           </div>
@@ -203,7 +212,7 @@ class postcard extends Component {
         {this.state.showcomment ? (
           <Comments
             inccomment={this.onCommentHandler}
-            postdata={this.props.postdata}
+            postdata={this.state}
           ></Comments>
         ) : null}
       </div>
@@ -211,4 +220,5 @@ class postcard extends Component {
   }
 }
 
-export default withRouter(postcard);
+
+export default withRouter(bookmarkpostcard);

@@ -12,7 +12,9 @@
 
 .Photobar{
     border-radius: 15px;
-    background-color: rgb(102, 153, 228);
+    background-image:url('https://external-preview.redd.it/maCo_IQpxZHQiKhC3btIbR1uw6Y06aGOpibwtQYkA1E.png?auto=webp&s=58360e774a2be9dab5d9ecd52880a9fbf32899f5');
+   background-size: cover;
+    /* background-color: rgb(102, 153, 228); */
     backdrop-filter: blur(5%);
     height:200px;
     width:100%;
@@ -85,7 +87,7 @@
 
 .bio{
     border-radius: 15px;
-    height:36vh;
+    height: 100px;
     width: 84vw;
     margin :20px auto;
     box-sizing: border-box;

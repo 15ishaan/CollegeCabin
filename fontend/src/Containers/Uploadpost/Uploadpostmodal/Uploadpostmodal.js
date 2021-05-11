@@ -35,18 +35,23 @@ export default function FormDialog(props) {
 
   const submit = () => {
     let fd = new FormData();
-    //console.log(file);
-    var filedata = file;
-    //console.log(filedata);
-    //console.log(filetype)
-    fd.append("file",filedata,filedata.name);
+   
+    
     fd.append("caption" , caption);
     const username = localStorage.getItem("username");
+    let url;
+    if(filetype === "null")
+    {
+      url = "/uploadStatus/" + username;
+    }
+    else
+    { 
+    var filedata = file;
+    fd.append("file", filedata, filedata.name);
+      url = "/uploadPost/file/" + username + "/" + filetype;
+    }
     axios.post(
-      "/uploadPost/file/" +
-        username +
-        "/" +
-        filetype,
+      url,
       fd,
       {
         onUploadProgress: (progressEvent) => {
@@ -102,9 +107,9 @@ export default function FormDialog(props) {
           </button>
         </div>
         <DialogContent>
-          <div className={classes.user}>
+          {/* <div className={classes.user}>
             <h4>Manas Saxena</h4>
-          </div>
+          </div> */}
           <div className={classes.content}>
             <textarea
               name="caption"

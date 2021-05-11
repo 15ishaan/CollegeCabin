@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import classes from "../Detailsform/Detailsform.module.css";
 import axios from '../../Components/hoc/axios'
 import Select from '../../Components/reusable/Selectinput';
+import Alert from "../../Components/reusable/Alerts"
 class details extends Component {
   state = {
     collegeName: "",
@@ -11,6 +12,8 @@ class details extends Component {
     gender: "",
     dob: "",
     bio: "",
+    alert:false,
+    alertdata:"",
     componentcollegename:{
       label:'College Name*',
       name:"collegeName",
@@ -42,13 +45,8 @@ class details extends Component {
         username:localStorage.getItem("username")
       };
       console.log(Data);
-      axios.post("/UserDetails",Data,{
-        onUploadProgress: ProgressEvent =>{
-          console.log(ProgressEvent.loaded/ProgressEvent.total*100);
-        }
-      })
+      axios.post("/UserDetails",Data)
       .then((response) =>{
-
         console.log(response);
         this.props.history.push("/profile/"+localStorage.getItem("username"))
       })
@@ -68,8 +66,15 @@ class details extends Component {
     })
     
   }
-    
-  
+  componentDidMount(){
+      if(this.props.history.action==="PUSH")
+      {
+        this.setState({
+          alert:true,
+          alertdata:"Please fill the following details to continue"
+        })
+      }
+  }
 
   // validate =() =>{
 
@@ -79,8 +84,20 @@ class details extends Component {
   //   }
   // }
   render() {
-   
+
     return (
+      <>
+      {this.state.alert ? (
+          <div style={{ marginBottom: "20px", marginTop: "-20px" }}>
+            <Alert
+              severity="warning"
+              closed={this.onCloseHandler}
+              alertdata={this.state.alertdata}
+            ></Alert>
+          </div>
+        ) : (
+          <div></div>
+        )}
       <div className={classes.Form}>
         <div className={classes.Avtar}>
           <img
@@ -203,6 +220,7 @@ class details extends Component {
           </div>
         </form>
       </div>
+      </>
     );
   }
 }

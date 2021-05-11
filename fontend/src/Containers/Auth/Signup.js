@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classes from "./Signup.module.css";
 import axios from '../../Components/hoc/axios';
 import { withRouter } from "react-router-dom";
-
+import Alert from "../../Components/reusable/Alerts" 
 class Signup extends Component {
   state = {
     firstname: "",
@@ -13,6 +13,8 @@ class Signup extends Component {
     errors: {},
     error:'',
     loading :false,
+    alert:false,
+    alertdata:'',
   };
   submit = (e) => {
     e.preventDefault();
@@ -26,33 +28,37 @@ class Signup extends Component {
         confirmPassword:this.state.password,
         roles:"admin"
       };
-      console.log(Data);
 
       this.setState({
         loading:true,
       })
       axios
         .post("/registeruser", Data)
-        .then((response) => {
-          if (response.status === 200) {
+        .then((res) => {
             this.setState({ 
             registered: true,
             loading:false 
           });
             this.props.history.push("/Signin");
           }
-        })
-        .catch((error) => {
+        )
+        .catch((err) => {
           this.setState({
             loading:false,
+            alert:true,
+            alertdata:err.response.data.message
           })
-          console.log(error.response);
-          // this.setState({
-          //   error:error.response.data.message
-          //           })
+          
         });
 
       
+    }
+    else{
+      if (this.state.alert === true) {
+        this.setState({
+          alert: false,
+        });
+      }
     }
   };
   onChangeHandler = (event) => {
@@ -60,25 +66,9 @@ class Signup extends Component {
     this.setState({
       [name]: value,
     });
-    // if ([name] == 'email') {
-    //   let input = this.state;
-    // let errors = {};
-    // let isValid = true;
-    //   if (!input["email"]) {
-    //     isValid = false;
-    //     errors["email"] = "Please enter your email Address.";
-    //   }
-    // }
-    //  this.passvalid();
+    
   };
-  //  passwordvalidation='';
-  //  passvalid = () =>{
-  //   if(this.state.username.length<=5){
-  //   this.passwordvalidation='Password must contain 6 letters'
-  //   }
-  //   if(this.state.username.length>5)
-  //   this.passwordvalidation=''
-  //  }
+  
   validate() {
     let input = this.state;
     let errors = {};
@@ -114,9 +104,14 @@ class Signup extends Component {
       errors["password"] = "Please enter your Password.";
     }
 
+    if(isValid === false)
+    {
     this.setState({
-      errors: errors,
+
+      alert:true,
+      alertdata:"Please enter valid data"
     });
+  }
 
     return isValid;
   }
@@ -125,73 +120,104 @@ class Signup extends Component {
     this.props.history.push("/Signin");
   };
 
-  render() {
+  onCloseHandler=()=>{
+    this.setState({
+      alert:false,
+    })
+  }
 
-    return(
-      <div className={classes.Form}>
-        <div className={classes.Avtar}>
-        <p>
-        <svg width="50px" height="46px"  color="white" viewBox="0 0 16 16" className="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <path fillRule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-</svg>
-        </p>
-        <h3>
-        Sign up
-        </h3>
-        </div>
-        <form className={classes.main}>
-          <div>
-          <input type="text" 
-          placeholder="Firstname *"
-          value={this.state.firstname}
-          name="firstname"
-          onChange={this.onChangeHandler} 
-          ></input>
-           <p style={{ color: "red", fontSize: "10px" }}>
-                {this.state.errors.name}
-              </p>
+  render() {
+    return (
+      <div>
+        {this.state.alert ? (
+          <div style={{ marginBottom: "20px", marginTop: "-20px" }}>
+            <Alert
+              severity="error"
+              closed={this.onCloseHandler}
+              alertdata={this.state.alertdata}
+            ></Alert>
           </div>
-          <div>
-          <input type="text" 
-          placeholder="Lastname *"
-          value={this.state.lastname}
-          name="lastname"
-          onChange={this.onChangeHandler}
-          ></input>
-          <p style={{ color: "red", fontSize: "10px" }}>
-                {this.state.errors.username}
+        ) : (
+          <div></div>
+        )}
+        <div className={classes.layout}>
+          <div className={classes.Form}>
+            <div className={classes.Avtar}>
+              <h1>Sign Up</h1>
+            </div>
+            <form className={classes.main}>
+              <div>
+                <label>First name </label>
+                <input
+                  type="text"
+                  placeholder="Firstname *"
+                  value={this.state.firstname}
+                  name="firstname"
+                  onChange={this.onChangeHandler}
+                ></input>
+              </div>
+              <p style={{ color: "red", fontSize: "10px" }}>
+                {this.state.errors.firstname}
               </p>
-          </div>
-          <div>
-          <input type="email"
-           placeholder="email *"
-           value={this.state.email}
-           name="email"
-           onChange={this.onChangeHandler}
-           ></input>
-            <p style={{ color: "red", fontSize: "10px" }}>
+              <div>
+                <label>Last name </label>
+                <input
+                  type="text"
+                  placeholder="Lastname *"
+                  value={this.state.lastname}
+                  name="lastname"
+                  onChange={this.onChangeHandler}
+                ></input>
+              </div>
+              <p style={{ color: "red", fontSize: "10px" }}>
+                {this.state.errors.lastname}
+              </p>
+
+              <div>
+                <label>Email</label>
+                <input
+                  type="email"
+                  placeholder="email *"
+                  value={this.state.email}
+                  name="email"
+                  onChange={this.onChangeHandler}
+                ></input>
+              </div>
+              <p style={{ color: "red", fontSize: "10px" }}>
                 {this.state.errors.email}
               </p>
-          </div>
-          <div>
-          <input type="password"
-           placeholder="Password *"
-           value={this.state.password}
-           name="password"
-           onChange={this.onChangeHandler}
-           ></input>
-           <p style={{ color: "red", fontSize: "10px" }}>
-                {this.state.errors.password}
+
+              <div>
+                <label>Password</label>
+                <input
+                  type="password"
+                  placeholder="Password *"
+                  value={this.state.password}
+                  name="password"
+                  onChange={this.onChangeHandler}
+                ></input>
+                <p style={{ color: "red", fontSize: "10px" }}>
+                  {this.state.errors.password}
+                </p>
+              </div>
+              <div>
+                <button onClick={this.submit} className={classes.Submit}>
+                  Submit
+                </button>
+              </div>
+
+              <p onClick={this.toSignin} style={{ cursor: "pointer" }}>
+                Already registered?
               </p>
+            </form>
           </div>
-          <div style={{height:"35px"}}>
-          <button onClick={this.submit} className={classes.Submit}>Submit</button>
+          <div className={classes.illustration}>
+            <img
+              style={{ height: "100%", width: "100%" }}
+              src="https://cdni.iconscout.com/illustration/premium/thumb/college-student-boy-studying-on-laptop-with-e-books-2710149-2261433.png"
+            ></img>
           </div>
-
-         <p onClick={this.toSignin} style={{cursor:"pointer"}}>Already registered?</p>
-              <p style={{color:'red', fontSize:'12px' }}>{this.state.error}</p>
-
-        </form>
+        </div>
       </div>
     );
   }

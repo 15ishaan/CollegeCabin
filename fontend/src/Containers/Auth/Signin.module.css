@@ -10,8 +10,8 @@
 }
 .Form{  
     display: grid;
-    padding:40px 0;
-   height:70vh;
+    padding:60px 0;
+   height:60vh;
    width:40%;
    text-align: center;
    
@@ -19,7 +19,7 @@
 .Avtar{
     text-align: left;
     width:80%;
-    margin:0 auto -15px;
+    margin:0 auto -25px;
     box-sizing: border-box;
     padding:0 8px;
 }

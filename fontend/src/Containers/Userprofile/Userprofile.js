@@ -12,7 +12,7 @@ class profile extends Component {
     profilePic:null,
     name: "",
     username: "",
-    collegename: "",
+    collegename: null,
     branch: "",
     sem: "",
     bio: "",
@@ -53,6 +53,11 @@ class profile extends Component {
           bio: response.data.bio,
           loading: false,
         });
+
+        if(this.state.collegename===null)
+        {
+         this.props.history.push("/editdetails/" + this.state.username);
+        }
         console.log(response.data);
       })
       .catch((error) => {
@@ -61,12 +66,7 @@ class profile extends Component {
       });
   }
 
-  componentDidUpdate() {}
-
   render() {
-    console.log(this.state);
-    //const progress = 20;
-    //console.log(this.props);
 
     let content;
 
@@ -96,8 +96,7 @@ class profile extends Component {
                 <div className={classes.Openprofilemodal}>
                   <Editprofile onDpChange={this.changeDpHandler} />
                 </div>
-                {/* <input type='file' onChange={this.changeDpHandler}></input> */}
-                {/* <img className={classes.editicon} src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUyOC44OTkgNTI4Ljg5OSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwwLDApIj4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxwYXRoIGQ9Ik0zMjguODgzLDg5LjEyNWwxMDcuNTksMTA3LjU4OWwtMjcyLjM0LDI3Mi4zNEw1Ni42MDQsMzYxLjQ2NUwzMjguODgzLDg5LjEyNXogTTUxOC4xMTMsNjMuMTc3bC00Ny45ODEtNDcuOTgxICAgYy0xOC41NDMtMTguNTQzLTQ4LjY1My0xOC41NDMtNjcuMjU5LDBsLTQ1Ljk2MSw0NS45NjFsMTA3LjU5LDEwNy41OWw1My42MTEtNTMuNjExICAgQzUzMi40OTUsMTAwLjc1Myw1MzIuNDk1LDc3LjU1OSw1MTguMTEzLDYzLjE3N3ogTTAuMyw1MTIuNjljLTEuOTU4LDguODEyLDUuOTk4LDE2LjcwOCwxNC44MTEsMTQuNTY1bDExOS44OTEtMjkuMDY5ICAgTDI3LjQ3MywzOTAuNTk3TDAuMyw1MTIuNjl6IiBmaWxsPSIjZmZmZmZmIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BhdGg+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPC9nPjwvc3ZnPg==" /> */}
+          
               </div>
               <div className={classes.Username}>
                 <h3>{this.state.name}</h3>
@@ -150,9 +149,6 @@ class profile extends Component {
           <div className={classes.bio}>
             <h3>About me</h3>
             <div className={classes.biocontent}>{this.state.bio}</div>
-            <div className={classes.alert}>
-              <p>scroll to read more</p>
-            </div>
           </div>
         </div>
       );
