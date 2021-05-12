@@ -29,6 +29,8 @@ public class UserDetailsController {
         user.setGender(userDetailsRequest.getGender());
         user.setBirthdate(userDetailsRequest.getBirthdate());
         user.setBio(userDetailsRequest.getBio());
+        user.setBookmarks("");
+        user.setNoOfPosts(0);
         registrationRepo.save(user);
         return user;
     }

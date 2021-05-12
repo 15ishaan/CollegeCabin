@@ -29,8 +29,9 @@ public class Posts {
     private byte[] picByte;
     private String firstName;
     private String lastName;
+    private boolean Bookmarked;
 
-    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, boolean liked, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName) {
+    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, boolean liked, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName, boolean Bookmarked) {
         this.id = id;
         this.username = username;
         this.colName = colName;
@@ -47,6 +48,7 @@ public class Posts {
         this.picByte = picByte;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.Bookmarked = Bookmarked;
     }
 
     public Posts() {
@@ -179,5 +181,13 @@ public class Posts {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public boolean isBookmarked() {
+        return Bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        Bookmarked = bookmarked;
     }
 }

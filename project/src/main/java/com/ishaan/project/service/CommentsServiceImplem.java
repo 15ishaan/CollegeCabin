@@ -14,4 +14,8 @@ public class CommentsServiceImplem {
     public Iterable<Comments> findByPostId(int id){
         return repo.findByPostId(id);
     }
+
+    public Iterable<Comments> findByUsername(String username){
+        return repo.findByUsername(username);
+    }
 }

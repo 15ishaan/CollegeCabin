@@ -1,5 +1,6 @@
 package com.ishaan.project.service;
 
+import com.ishaan.project.model.AuthenticationProvider;
 import com.ishaan.project.model.User;
 import com.ishaan.project.repository.RegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class RegistrationService implements UserDetailsService {
         return repo.save(user);   // saving user
     }
 
+
+    public Iterable<User> fetchAll() {
+        return repo.findAllByOrderByNoOfPostsDesc();
+    }
+
     public User fetchUserById(int id){ return  repo.findById(id); }
 
 
@@ -35,6 +41,20 @@ public class RegistrationService implements UserDetailsService {
 
     public User fetchUserByUsernameAndPassword(String username, String password){
         return repo.findByUsernameAndPassword(username, password);
+    }
+
+    public void createNewUserAfterOAuthLoginSuccess(String username, String name, AuthenticationProvider authProvider){
+        User user = new User();
+        user.setUsername(username);
+        user.setFirstName(name);
+        user.setAuthProvider(authProvider);
+        repo.save(user);
+    }
+
+    public void updateUserAfterOAuthLoginSuccess(User user, String name, AuthenticationProvider authProvider) {
+        user.setFirstName(name);
+        user.setAuthProvider(authProvider);
+        repo.save(user);
     }
 
     // function to encode password
@@ -57,4 +77,5 @@ public class RegistrationService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), rolesL);
     }
+
 }

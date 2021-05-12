@@ -53,6 +53,9 @@ public class PostsController {
             posts.setPicByte(user.getPicByte());
             posts.setFirstName(user.getFirstName());
             posts.setLastName(user.getLastName());
+            posts.setBookmarked(false);
+            user.setNoOfPosts(user.getNoOfPosts()+1);
+            userRepo.save(user);
             postRepo.save(posts);
             ResponseEntity.status(200);
             return ResponseEntity.ok("Post has been uploaded");
@@ -78,10 +81,13 @@ public class PostsController {
             posts.setPicByte(user.getPicByte());
             posts.setFirstName(user.getFirstName());
             posts.setLastName(user.getLastName());
+            posts.setBookmarked(false);
             try {
                 byte[] fileContent = file.getBytes();
                 posts.setFileByte(fileContent);
                 postRepo.save(posts);
+                user.setNoOfPosts(user.getNoOfPosts()+1);
+                userRepo.save(user);
                 ResponseEntity.status(200);
                 return ResponseEntity.ok("Post has been uploaded");
             } catch (Exception e) {
@@ -96,32 +102,15 @@ public class PostsController {
     public Iterable<Posts> showAllPosts(@PathVariable String username) {
         User user = userRepo.findByUsername(username);
         Iterable<Posts> posts = postService.findByBranchAndSemAndColName(user.getBranch(), user.getSem(), user.getCollegeName());
-        Iterator<Posts> it = posts.iterator();
-        while(it.hasNext())
-        {
-            Posts post = it.next();
-            Likes likes = likeRepo.findByPostIdAndUsername(post.getId(), username);
-            if(likes == null || likes.isLiked() == false) post.setLiked(false);
-            else post.setLiked(true);
-            postRepo.save(post);
-        }
-        return posts;
+        return editPosts(posts, username, 1);
+
     }
 
     @GetMapping("/myPost/{username}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Iterable<Posts> showMyPosts(@PathVariable String username) {
         Iterable<Posts> posts = postService.findByUsername(username);
-        Iterator<Posts> it = posts.iterator();
-        while(it.hasNext())
-        {
-            Posts post = it.next();
-            Likes likes = likeRepo.findByPostIdAndUsername(post.getId(), username);
-            if(likes == null || likes.isLiked() == false) post.setLiked(false);
-            else post.setLiked(true);
-            postRepo.save(post);
-        }
-        return posts;
+        return editPosts(posts, username, 0);
     }
 
     @PostMapping("/addLike/{username}/{postId}")
@@ -157,7 +146,7 @@ public class PostsController {
 
     @PostMapping("/addComment/{username}/{postId}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public int addComment(@PathVariable("username") String username, @PathVariable("postId") int id, @RequestBody String comment) {
+    public int addComment(@PathVariable("username") String username, @PathVariable("postId") int id, @RequestParam("comment") String comment) {
         Comments Comments = new Comments();
         User user = userRepo.findByUsername(username);
         Comments.setPicByte(user.getPicByte());
@@ -194,5 +183,71 @@ public class PostsController {
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
-    }*/
+    }
+    */
+
+    @GetMapping("/post/{postId}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public Posts showPostWithId(@PathVariable("postId") int id) {
+        return postService.findById(id);
+    }
+
+    public Iterable<Posts> editPosts(Iterable<Posts> posts, String username, int flag)
+    {
+        Iterator<Posts> it = posts.iterator();
+        User user = userRepo.findByUsername(username);
+        while(it.hasNext())
+        {
+            Posts post = it.next();
+            Likes likes = likeRepo.findByPostIdAndUsername(post.getId(), username);
+            if(likes == null || likes.isLiked() == false) post.setLiked(false);
+            else post.setLiked(true);
+            
+            String pId = String.valueOf(post.getId());
+            String str = user.getBookmarks();
+            int l = 0, c = 0;
+
+            if(str == null) {
+                l = 0;
+                c = 0;
+            }
+            else{
+                l = str.length();
+                c = 0;
+            }
+            String s = "";
+
+            //checking if product already exists
+            for (int i = 0; i < l; i++){
+                if(str.charAt(i) == ';'){
+                    if(s.equals(pId)){
+                        s = "";
+                        c = 1;
+                        break;
+                    }
+                    else{
+                        s = "";
+                    }
+                }
+                else{
+                    s += str.charAt(i);
+                }
+            }
+
+            //if Yes
+            if(c == 1){
+                post.setBookmarked(true);
+            }
+            
+            // if No
+            else {
+                post.setBookmarked(false);
+            }
+            postRepo.save(post);
+        }
+        if(flag == 0){
+            return postService.findByUsername(username);
+        }
+        return postService.findByBranchAndSemAndColName(user.getBranch(), user.getSem(), user.getCollegeName());
+    }
 }

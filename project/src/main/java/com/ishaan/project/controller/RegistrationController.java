@@ -73,7 +73,7 @@ public class RegistrationController {
             mailMessage.setSubject("Complete Registration!");
             mailMessage.setFrom("gomailsender@gmail.com");
             mailMessage.setText("To confirm your account, please click here : "
-                    +"http://326d3726c020.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
+                    +"http://4509ba7e12c6.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
 
             emailService.sendEmail(mailMessage);
 
@@ -137,7 +137,7 @@ public class RegistrationController {
                 mailMessage.setSubject("Complete Registration!");
                 mailMessage.setFrom("gomailsender@gmail.com");
                 mailMessage.setText("This is new confirmation link, to confirm your account, please click here: "
-                        +"http://326d3726c020.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
+                        +"http://4509ba7e12c6.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
                         + "\n\n\n\nRegards: @Team ClickNShip");
 
                 emailService.sendEmail(mailMessage);
@@ -152,6 +152,12 @@ public class RegistrationController {
     public User findUser(@PathVariable String username){
         User user = service.fetchUserByUsername(username);
         return user;
+    }
+
+    @GetMapping("/allUser")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public Iterable<User> findUser(){
+       return service.fetchAll();
     }
 
     //encoding incoming password to check with the encoded password in database

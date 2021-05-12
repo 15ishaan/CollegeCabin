@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 public class BookmarkController {
 
     @Autowired
@@ -21,13 +22,15 @@ public class BookmarkController {
 
     @PostMapping("/addBookmark/{postId}/{username}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<String> addBookmark(@PathVariable("postId") int id, @PathVariable("username") String username){
+    public ResponseEntity<List<String>> addBookmark(@PathVariable("postId") int id, @PathVariable("username") String username){
 
         User user = service.fetchUserByUsername(username);
-        user.setBookmarks(user.getBookmarks() + id + ";");
+        String pId = String.valueOf(id);
+        if(user.getBookmarks() == null) user.setBookmarks(pId + ";");
+        else user.setBookmarks(user.getBookmarks() + pId + ";");
         userRepo.save(user);
-
-        return stringToList(user.getBookmarks());
+        List<String> list = stringToList(user.getBookmarks());
+        return new ResponseEntity<List<String>>(list, HttpStatus.OK);
     }
 
     @GetMapping("/myBookmarks/{username}")
@@ -68,42 +71,6 @@ public class BookmarkController {
         user.setBookmarks(str1);
         userRepo.save(user);
         return stringToList(user.getBookmarks());
-    }
-
-    @PostMapping("/doesPostExist/{postId}/{username}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public boolean doesPostExist(@PathVariable("postId") int id, @PathVariable("username") String username){
-
-        User user = service.fetchUserByUsername(username);
-        String pId = String.valueOf(id);
-
-        //checking if product already exists
-        String str = user.getBookmarks();
-        int l = str.length(), c = 0;
-        String s = "";
-        for (int i = 0; i < l; i++){
-            if(str.charAt(i) == ';'){
-                if(s.equals(pId)){
-                    s = "";
-                    c = 1;
-                    break;
-                }
-                else{
-                    s = "";
-                }
-            }
-            else{
-                s += str.charAt(i);
-            }
-        }
-        //if Yes
-        if(c == 1){
-            return true;
-        }
-        // if No
-        else {
-            return false;
-        }
     }
 
     public List<String> stringToList(String str){

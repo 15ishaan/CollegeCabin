@@ -17,7 +17,9 @@ create table USER(
      BIRTHDATE VARCHAR(128),
      PICBYTE IMAGE,
      ENABLED BOOLEAN,
-     BOOKMARKS VARCHAR(128)
+     BOOKMARKS VARCHAR(128),
+     NOOFPOSTS INTEGER,
+     AUTHPROVIDER ENUM('value_1', 'value_2')
 );
 
 drop table if exists CONFIRMATIONTOKEN;
@@ -47,7 +49,8 @@ create table POSTS(
      PICBYTE IMAGE,
      FIRSTNAME VARCHAR(128),
      LASTNAME VARCHAR(128),
-     LIKED BOOLEAN
+     LIKED BOOLEAN,
+     BOOKMARKED BOOLEAN
 );
 
 drop table if exists COMMENTS;

@@ -48,8 +48,10 @@ public class User {
     private byte[] picByte;
 
     private String Bookmarks;
+    private int noOfPosts;
+    private AuthenticationProvider authProvider;
 
-    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks) {
+    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,6 +68,7 @@ public class User {
         this.bio = bio;
         this.picByte = picByte;
         Bookmarks = bookmarks;
+        this.noOfPosts = noOfPosts;
     }
 
     public User(){
@@ -195,6 +198,22 @@ public class User {
 
     public void setBookmarks(String bookmarks) {
         Bookmarks = bookmarks;
+    }
+
+    public int getNoOfPosts() {
+        return noOfPosts;
+    }
+
+    public void setNoOfPosts(int noOfPosts) {
+        this.noOfPosts = noOfPosts;
+    }
+
+    public AuthenticationProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthenticationProvider authProvider) {
+        this.authProvider = authProvider;
     }
 }
 

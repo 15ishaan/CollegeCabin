@@ -1,6 +1,8 @@
 package com.ishaan.project.config;
 
 import com.ishaan.project.filter.JwtRequestFilter;
+import com.ishaan.project.service.CustomOAuth2UserService;
+import com.ishaan.project.service.OAuth2LoginSuccessHandler;
 import com.ishaan.project.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,22 +18,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+//@EnableOAuth2Sso
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private CustomOAuth2UserService oAuth2UserService;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         //disabling csrf for h2 db
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/oauth2/**").permitAll()
                 .antMatchers("/console/**").permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oAuth2UserService)
+                .and()
+                .successHandler(oAuth2LoginSuccessHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //for jwtFilter
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.headers().frameOptions().disable();
+
+
     }
 
     @Override
@@ -51,4 +70,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public NoOpPasswordEncoder passwordEncoder(){
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
+
+//    @Bean
+//    public ClientRegistrationRepository clientRegistrationRepository() {
+//        return new InMemoryClientRegistrationRepository();
+//    }
 }
