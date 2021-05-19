@@ -1,9 +1,12 @@
 package com.ishaan.project.service;
 
 import com.ishaan.project.model.AuthenticationProvider;
+import com.ishaan.project.model.AuthenticationResponse;
 import com.ishaan.project.model.User;
 import com.ishaan.project.repository.RegistrationRepository;
+import com.ishaan.project.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +22,9 @@ public class RegistrationService implements UserDetailsService {
 
     @Autowired
     private RegistrationRepository repo;
+
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     public User saveUser(User user){
         user.setPassword(getEncodedString(user.getPassword()));   //encoding password
@@ -48,11 +54,13 @@ public class RegistrationService implements UserDetailsService {
         user.setUsername(username);
         user.setFirstName(name);
         user.setAuthProvider(authProvider);
+        user.setRoles("admin");
+        user.setEnabled(true);
         repo.save(user);
+
     }
 
-    public void updateUserAfterOAuthLoginSuccess(User user, String name, AuthenticationProvider authProvider) {
-        user.setFirstName(name);
+    public void updateUserAfterOAuthLoginSuccess(User user, AuthenticationProvider authProvider) {
         user.setAuthProvider(authProvider);
         repo.save(user);
     }

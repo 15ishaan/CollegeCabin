@@ -15,13 +15,13 @@ public class User {
     private int id;
 
     @NotNull(message = "Enter your first name")
-    @Pattern(
-            regexp = "^[a-zA-Z_-]{3,30}$",
-            message = "Enter valid name"
-    )
+//    @Pattern(
+//            regexp = "^[a-zA-Z_-]{3,30}$",
+//            message = "Enter valid name"
+//    )
     private String firstName;
 
-    @NotNull(message = "Enter your last name")
+   // @NotNull(message = "Enter your last name")
     @Size(min = 3, max = 30)
     private String lastName;
 
@@ -30,7 +30,7 @@ public class User {
     private String username;
 
     @Size(min = 6, max = 30)
-    @NotNull(message = "Enter your password")
+   // @NotNull(message = "Enter your password")
     private String password;
     private String confirmPassword;
 
@@ -51,7 +51,7 @@ public class User {
     private int noOfPosts;
     private AuthenticationProvider authProvider;
 
-    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts) {
+    public User(int id, @NotNull(message = "Enter your first name") /*@Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name")*/ String firstName, /*@NotNull(message = "Enter your last name")*/ @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) /*@NotNull(message = "Enter your password")*/ String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
