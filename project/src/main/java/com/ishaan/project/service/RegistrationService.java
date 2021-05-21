@@ -66,7 +66,7 @@ public class RegistrationService implements UserDetailsService {
     }
 
     // function to encode password
-    private String getEncodedString(String password){
+    public String getEncodedString(String password){
         return Base64.getEncoder().encodeToString(password.getBytes());
     }
 

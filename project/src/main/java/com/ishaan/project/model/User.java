@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 public class User {
@@ -50,8 +51,10 @@ public class User {
     private String Bookmarks;
     private int noOfPosts;
     private AuthenticationProvider authProvider;
+    private int otp;
+    private String otpCreationTime;
 
-    public User(int id, @NotNull(message = "Enter your first name") /*@Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name")*/ String firstName, /*@NotNull(message = "Enter your last name")*/ @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) /*@NotNull(message = "Enter your password")*/ String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts) {
+    public User(int id, @NotNull(message = "Enter your first name") String firstName, @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts, AuthenticationProvider authProvider, int otp, String otpCreationTime) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -69,6 +72,9 @@ public class User {
         this.picByte = picByte;
         Bookmarks = bookmarks;
         this.noOfPosts = noOfPosts;
+        this.authProvider = authProvider;
+        this.otp = otp;
+        this.otpCreationTime = otpCreationTime;
     }
 
     public User(){
@@ -214,6 +220,22 @@ public class User {
 
     public void setAuthProvider(AuthenticationProvider authProvider) {
         this.authProvider = authProvider;
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
+
+    public String getOtpCreationTime() {
+        return otpCreationTime;
+    }
+
+    public void setOtpCreationTime(String otpCreationTime) {
+        this.otpCreationTime = otpCreationTime;
     }
 }
 

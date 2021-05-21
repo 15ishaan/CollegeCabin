@@ -70,7 +70,7 @@ public class RegistrationController {
             mailMessage.setSubject("Complete Registration!");
             mailMessage.setFrom("gomailsender@gmail.com");
             mailMessage.setText("To confirm your account, please click here : "
-                    +"http://a16948151ae7.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
+                    +"http://ee694ad858ab.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
 
             emailService.sendEmail(mailMessage);
 
@@ -134,7 +134,7 @@ public class RegistrationController {
                 mailMessage.setSubject("Complete Registration!");
                 mailMessage.setFrom("gomailsender@gmail.com");
                 mailMessage.setText("This is new confirmation link, to confirm your account, please click here: "
-                        +"http://a16948151ae7.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
+                        +"http://ee694ad858ab.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
                         + "\n\n\n\nRegards: @Team ClickNShip");
 
                 emailService.sendEmail(mailMessage);

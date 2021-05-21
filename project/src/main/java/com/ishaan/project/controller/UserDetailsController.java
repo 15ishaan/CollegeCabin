@@ -41,7 +41,7 @@ public class UserDetailsController {
     public User editPassword(@RequestBody EditPasswordRequest editPasswordRequest) throws Exception{
 
         User user = service.fetchUserByUsername(editPasswordRequest.getUsername());
-        System.out.println(getEncodedString(editPasswordRequest.getOldPassword()));
+        //System.out.println(getEncodedString(editPasswordRequest.getOldPassword()));
         if(user.getPassword().equals(getEncodedString(editPasswordRequest.getOldPassword()))) {
             if(editPasswordRequest.getNewPassword().equals(editPasswordRequest.getNewConfirmPassword())) {
                 user.setPassword(getEncodedString(editPasswordRequest.getNewPassword()));
