@@ -1,0 +1,10 @@
+.timer{
+    color:#000000;
+  font-size: 15px ; 
+}
+
+.resendotp{
+    color:black;
+    font-size: 15px;
+    cursor: pointer;
+}

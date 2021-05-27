@@ -33,7 +33,7 @@ export default function TransitionAlerts(props) {
               color="inherit"
               size="small"
               onClick={() => {
-                  props.closed();
+                  // props.closed();
                 setOpen(false);
               }}
             >

@@ -77,6 +77,13 @@ class profile extends Component {
         <div>
           <div className={classes.Main}>
             <div className={classes.Photobar}>
+              <button 
+              onClick={()=>{
+                this.props.history.push("/editpassword/" + this.state.username);
+              }}
+               className={classes.editpass}>
+                Edit Password
+              </button>
               <div className={classes.Userimage}>
                 {this.state.profilePic === null ? (
                   <img
