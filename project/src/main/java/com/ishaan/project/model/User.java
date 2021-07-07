@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 public class User {
@@ -15,13 +16,13 @@ public class User {
     private int id;
 
     @NotNull(message = "Enter your first name")
-    @Pattern(
-            regexp = "^[a-zA-Z_-]{3,30}$",
-            message = "Enter valid name"
-    )
+//    @Pattern(
+//            regexp = "^[a-zA-Z_-]{3,30}$",
+//            message = "Enter valid name"
+//    )
     private String firstName;
 
-    @NotNull(message = "Enter your last name")
+   // @NotNull(message = "Enter your last name")
     @Size(min = 3, max = 30)
     private String lastName;
 
@@ -30,7 +31,7 @@ public class User {
     private String username;
 
     @Size(min = 6, max = 30)
-    @NotNull(message = "Enter your password")
+   // @NotNull(message = "Enter your password")
     private String password;
     private String confirmPassword;
 
@@ -47,8 +48,13 @@ public class User {
     @Column(length = 1000)
     private byte[] picByte;
 
+    private String Bookmarks;
+    private int noOfPosts;
+    private AuthenticationProvider authProvider;
+    private int otp;
+    private String otpCreationTime;
 
-    public User(int id, @NotNull(message = "Enter your first name") @Pattern(regexp = "^[a-zA-Z_-]{3,30}$", message = "Enter valid name") String firstName, @NotNull(message = "Enter your last name") @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) @NotNull(message = "Enter your password") String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio) {
+    public User(int id, @NotNull(message = "Enter your first name") String firstName, @Size(min = 3, max = 30) String lastName, @NotNull(message = "Enter your email") String username, @Size(min = 6, max = 30) String password, String confirmPassword, boolean enabled, String roles, String collegeName, String branch, String sem, String gender, String birthdate, String bio, byte[] picByte, String bookmarks, int noOfPosts, AuthenticationProvider authProvider, int otp, String otpCreationTime) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,7 +69,12 @@ public class User {
         this.gender = gender;
         this.birthdate = birthdate;
         this.bio = bio;
-        this.picByte = null;
+        this.picByte = picByte;
+        Bookmarks = bookmarks;
+        this.noOfPosts = noOfPosts;
+        this.authProvider = authProvider;
+        this.otp = otp;
+        this.otpCreationTime = otpCreationTime;
     }
 
     public User(){
@@ -185,6 +196,46 @@ public class User {
 
     public void setPicByte(byte[] picByte) {
         this.picByte = picByte;
+    }
+
+    public String getBookmarks() {
+        return Bookmarks;
+    }
+
+    public void setBookmarks(String bookmarks) {
+        Bookmarks = bookmarks;
+    }
+
+    public int getNoOfPosts() {
+        return noOfPosts;
+    }
+
+    public void setNoOfPosts(int noOfPosts) {
+        this.noOfPosts = noOfPosts;
+    }
+
+    public AuthenticationProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthenticationProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
+
+    public String getOtpCreationTime() {
+        return otpCreationTime;
+    }
+
+    public void setOtpCreationTime(String otpCreationTime) {
+        this.otpCreationTime = otpCreationTime;
     }
 }
 

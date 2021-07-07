@@ -1,9 +1,6 @@
 package com.ishaan.project.controller;
 
-import com.ishaan.project.model.AuthenticationRequest;
-import com.ishaan.project.model.AuthenticationResponse;
-import com.ishaan.project.model.ConfirmationToken;
-import com.ishaan.project.model.User;
+import com.ishaan.project.model.*;
 import com.ishaan.project.repository.ConfirmationTokenRepository;
 import com.ishaan.project.repository.RegistrationRepository;
 import com.ishaan.project.service.EmailService;
@@ -73,7 +70,7 @@ public class RegistrationController {
             mailMessage.setSubject("Complete Registration!");
             mailMessage.setFrom("gomailsender@gmail.com");
             mailMessage.setText("To confirm your account, please click here : "
-                    +"http://a91d8aafa6c6.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
+                    +"http://ee694ad858ab.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken());
 
             emailService.sendEmail(mailMessage);
 
@@ -89,7 +86,7 @@ public class RegistrationController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> confirmUserAccount(@RequestParam("token")String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-        System.out.println(token);
+        //System.out.println(token);
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
             user.setEnabled(true);
@@ -137,7 +134,7 @@ public class RegistrationController {
                 mailMessage.setSubject("Complete Registration!");
                 mailMessage.setFrom("gomailsender@gmail.com");
                 mailMessage.setText("This is new confirmation link, to confirm your account, please click here: "
-                        +"http://a91d8aafa6c6.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
+                        +"http://ee694ad858ab.ngrok.io/confirm-account?token="+confirmationToken.getConfirmationToken()
                         + "\n\n\n\nRegards: @Team ClickNShip");
 
                 emailService.sendEmail(mailMessage);
@@ -152,6 +149,67 @@ public class RegistrationController {
     public User findUser(@PathVariable String username){
         User user = service.fetchUserByUsername(username);
         return user;
+    }
+
+    @GetMapping("/allUser")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public Iterable<User> findUser(){
+       return service.fetchAll();
+    }
+
+    @PostMapping("/oauth2/{username}/{name}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<?> loginUserUsingOAuth2(@PathVariable("username") String username, @PathVariable("name") String name) {
+        User user = service.fetchUserByUsername(username);
+        if(user == null){
+            service.createNewUserAfterOAuthLoginSuccess(username, name, AuthenticationProvider.GOOGLE);
+            return ResponseEntity.ok("Null");
+        }
+        else{
+            service.updateUserAfterOAuthLoginSuccess(user, AuthenticationProvider.GOOGLE);
+            final UserDetails userDetails = service.loadUserByUsername(username);
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        }
+    }
+
+    @PostMapping("/registerOAuth2User")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<?> registerOAuth2User(@RequestBody User userObj) throws Exception {
+        String username = userObj.getUsername();
+        User user = service.fetchUserByUsername(username);
+        String tempPassword = userObj.getPassword();
+        String tempConfirmPassword = userObj.getConfirmPassword();
+
+        if (tempPassword.equals(tempConfirmPassword)) {
+            user.setPassword(getEncodedString(tempPassword));
+            user.setConfirmPassword(getEncodedString(tempConfirmPassword));
+            user.setFirstName(userObj.getFirstName());
+            user.setLastName(userObj.getLastName());
+            user.setEnabled(true);
+            userRepository.save(user);
+
+            //accessing token
+            ConfirmationToken confirmationToken = new ConfirmationToken(user);
+            confirmationTokenRepository.save(confirmationToken);
+
+
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(username);
+            mailMessage.setSubject("Successful Registration!");
+            mailMessage.setFrom("gomailsender@gmail.com");
+            mailMessage.setText("Your account with name : " + user.getFirstName() + " " + user.getLastName() + "has successfully registered to College Cabin.");
+
+            emailService.sendEmail(mailMessage);
+
+            final UserDetails userDetails = service.loadUserByUsername(username);
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        }
+        else{
+            throw new Exception("Password must match");
+        }
+
     }
 
     //encoding incoming password to check with the encoded password in database

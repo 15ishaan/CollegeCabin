@@ -17,13 +17,21 @@ public class Posts {
     private String unit;
     private int noOfLikes;
     private int noOfComments;
+    private boolean liked;
 
     @Lob
     @Column(length = 1000)
     private byte[] fileByte;
     private String fileType;
 
-    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, byte[] fileByte, String fileType) {
+    @Lob
+    @Column(length = 1000)
+    private byte[] picByte;
+    private String firstName;
+    private String lastName;
+    private boolean Bookmarked;
+
+    public Posts(int id, String username, String colName, String sem, String branch, String caption, String subject, String unit, int noOfLikes, int noOfComments, boolean liked, byte[] fileByte, String fileType, byte[] picByte, String firstName, String lastName, boolean Bookmarked) {
         this.id = id;
         this.username = username;
         this.colName = colName;
@@ -34,8 +42,13 @@ public class Posts {
         this.unit = unit;
         this.noOfLikes = noOfLikes;
         this.noOfComments = noOfComments;
+        this.liked = liked;
         this.fileByte = fileByte;
         this.fileType = fileType;
+        this.picByte = picByte;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.Bookmarked = Bookmarked;
     }
 
     public Posts() {
@@ -136,5 +149,45 @@ public class Posts {
 
     public void setFileType(String fileType) {
         this.fileType = fileType;
+    }
+
+    public byte[] getPicByte() {
+        return picByte;
+    }
+
+    public void setPicByte(byte[] picByte) {
+        this.picByte = picByte;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public boolean isBookmarked() {
+        return Bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        Bookmarked = bookmarked;
     }
 }
